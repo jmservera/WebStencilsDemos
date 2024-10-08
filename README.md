@@ -1,5 +1,28 @@
 # WebStencils Demos
+
+![WebStencils screenshot](.github/images/WebStencils-screenshot.png)
+
 Embarcadero official WebStencils demo repository.
+
+## Sample Projects included
+
+### WebStencils PlayGround
+This demo showcases the core functionality of WebStencils in a FireMonkey (FMX) application through a highly visual interface. The default templates are stored as global constants in a dedicated unit, and the demo allows editing the templates on the memo fields to allow interactive visualization of the generated output. 
+
+[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsPlayground)
+
+### WebStencils Demo Project
+This project demonstrates the usage of WebStencils with WebBroker. 
+
+[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsDemoProject)
+
+### WebStencils RAD Server Project
+This project demonstrates the usage of WebStencils with RAD Server. 
+
+[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsRADServerProject)
+
+> Both WebBroker and RAD Server projects offer the same website result but leveraging two different backend options. 
+
 
 ## Copyright
 This software is Copyright 2024 Embarcadero Technologies, Inc.

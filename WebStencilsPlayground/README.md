@@ -1,10 +1,8 @@
-# 📐 WebStencils Playground
+﻿# 📐 WebStencils Playground
+
+![WebStencils Playground screenshot](../.github/images/WebStencilsFMX.png)
 
 ## Description
-
-<p align="center">
-    <img src="screenshot.png" alt="screenshot" style="float: left; margin:24px">
-</p>  
 
 This demo showcases the core functionality of WebStencils in a FireMonkey (FMX) application through a highly visual interface. The templates are stored as global constants in a dedicated unit, while the `TPerson` class resides in its own separate unit.
 
