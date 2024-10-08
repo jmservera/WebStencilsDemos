@@ -1,6 +1,6 @@
 # WebStencils Demos
 
-![WebStencils screenshot](.github/images/WebStencils-screenshot.png)
+![WebStencils screenshot](.github/images/WebStencils-Screenshot.png)
 
 Embarcadero official WebStencils demo repository.
 
