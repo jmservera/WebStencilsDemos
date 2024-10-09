@@ -1,6 +1,6 @@
-﻿# 📐 WebStencils Playground
+﻿# 📐 WebStencils Showcase
 
-![WebStencils Playground screenshot](../.github/images/WebStencilsFMX.png)
+![WebStencils Showcase screenshot](../.github/images/WebStencilsFMX.png)
 
 ## Description
 

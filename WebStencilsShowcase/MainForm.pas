@@ -12,7 +12,7 @@ uses
   PersonClass;
 
 type
-  TWebStencilsPlayground = class(TForm)
+  TWebStencilsLabs = class(TForm)
     WebStencilsProcessor: TWebStencilsProcessor;
     ActionList: TActionList;
     ActGenerateWSResult: TAction;
@@ -55,7 +55,7 @@ type
   end;
 
 var
-  WebStencilsPlayground: TWebStencilsPlayground;
+  WebStencilsLabs: TWebStencilsLabs;
 
 implementation
 
@@ -63,7 +63,7 @@ uses MyTemplates;
 
 {$R *.fmx}
 
-procedure TWebStencilsPlayground.FormCreate(Sender: TObject);
+procedure TWebStencilsLabs.FormCreate(Sender: TObject);
 begin
   MemoPlainTemplate.Text := PlainTemplate1;
   MemoHTMLTemplate.Text := HTMLTemplate1;
@@ -73,12 +73,12 @@ begin
 	WebStencilsProcessor.AddVar('person', LPerson, false);
 end;
 
-procedure TWebStencilsPlayground.FormDestroy(Sender: TObject);
+procedure TWebStencilsLabs.FormDestroy(Sender: TObject);
 begin
   LPerson.Free;
 end;
 
-procedure TWebStencilsPlayground.ActGenerateWSResultExecute(Sender: TObject);
+procedure TWebStencilsLabs.ActGenerateWSResultExecute(Sender: TObject);
 begin
 	var GeneratedPlainContent := WebStencilsProcessor.ContentFromString(MemoPlainTemplate.Text);
 	var GeneratedHTMLContent := WebStencilsProcessor.ContentFromString(MemoHTMLTemplate.Text);
@@ -86,13 +86,13 @@ begin
 	BrowserWSGenerated.LoadFromStrings(GeneratedHTMLContent, '');
 end;
 
-procedure TWebStencilsPlayground.ActUpdateFieldsExecute(Sender: TObject);
+procedure TWebStencilsLabs.ActUpdateFieldsExecute(Sender: TObject);
 begin
   LPerson.Name := EdtName.Text;
   LPerson.Age := ifThen(EdtAge.Text = '', 0, EdtAge.Text.ToInteger);
 end;
 
-procedure TWebStencilsPlayground.ActUpdateFieldsUpdate(Sender: TObject);
+procedure TWebStencilsLabs.ActUpdateFieldsUpdate(Sender: TObject);
 begin
   BtnSave.Enabled := (LPerson.Age.ToString <> EdtAge.Text) or (LPerson.Name <> EdtName.Text);
 end;

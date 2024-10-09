@@ -1,7 +1,7 @@
-object WebStencilsPlayground: TWebStencilsPlayground
+object WebStencilsLabs: TWebStencilsLabs
   Left = 0
   Top = 0
-  Caption = 'WebStencils Playground'
+  Caption = 'WebStencils Showcase'
   ClientHeight = 678
   ClientWidth = 1049
   Position = ScreenCenter
@@ -25,7 +25,7 @@ object WebStencilsPlayground: TWebStencilsPlayground
     Size.Height = 62.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 48.000000000000000000
-    Text = #55357#56528'WebStencils Playground'
+    Text = #55357#56528'WebStencils Showcase'
     TabOrder = 4
   end
   object GridPanelLayout: TGridPanelLayout

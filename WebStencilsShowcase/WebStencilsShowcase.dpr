@@ -1,9 +1,9 @@
-﻿program WebStencilsFMX;
+﻿program WebStencilsShowcase;
 
 uses
   System.StartUpCopy,
   FMX.Forms,
-  MainForm in 'MainForm.pas' {WebStencilsPlayground},
+  MainForm in 'MainForm.pas' {WebStencilsLabs},
   PersonClass in 'PersonClass.pas',
   MyTemplates in 'MyTemplates.pas';
 
@@ -11,6 +11,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.CreateForm(TWebStencilsPlayground, WebStencilsPlayground);
+  Application.CreateForm(TWebStencilsLabs, WebStencilsLabs);
   Application.Run;
 end.
