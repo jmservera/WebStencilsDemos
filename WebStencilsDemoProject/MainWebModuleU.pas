@@ -46,7 +46,7 @@ constructor TMainWebModule.Create(AOwner: TComponent);
 begin
   inherited;
   InitControllers;
-  InitRequiredData;
+	InitRequiredData;
   DefineRoutes;
 end;
 
