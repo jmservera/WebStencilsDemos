@@ -2,7 +2,7 @@
 
 ![WebStencils screenshot](.github/images/WebStencils-Screenshot.png)
 
-Embarcadero official WebStencils demo repository.
+Embarcadero official WebStencils demo repository. Note that you will need RAD Studio (with Delphi or C++Builder) 12.2 or higher to compile the demos.
 
 ## Sample Projects included
 
