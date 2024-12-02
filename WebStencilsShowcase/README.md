@@ -12,7 +12,7 @@ The main form has been designed to adapt easily to any Desktop screen size (not 
 
 No additional configuration is required. Simply execute the program to get started.
 
-> **Note:** This demo has been tested on Windows but has not been verified on other platforms.
+> **Note:** This demo is compatible with all FMX platforms.
 
 ## Visual Styles
 
