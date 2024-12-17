@@ -1,4 +1,4 @@
-unit Helpers.FDQuery;
+﻿unit Helpers.FDQuery;
 
 interface
 

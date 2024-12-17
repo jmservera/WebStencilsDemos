@@ -1,4 +1,4 @@
-unit Model.PaginationParams;
+﻿unit Model.PaginationParams;
 
 interface
 
@@ -68,7 +68,7 @@ begin
 			if FPageNumber <= 0 then
 				FPageNumber := DEFAULT_PAGE_NUMBER;
     except
-      on E: EConvertError do
+			on E: EConvertError do
 				FPageNumber := DEFAULT_PAGE_NUMBER;
     end;
   end;
