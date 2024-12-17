@@ -49,19 +49,13 @@ begin
 	PageSizeStr := Request.QueryFields.Values['size'];
   if PageSizeStr <> '' then
   begin
-    try
-			FPageSize := StrToInt(PageSizeStr);
-
-      // Validate PageSize
-			if FPageSize <= 0 then
-				FPageSize := DEFAULT_PAGE_SIZE
-			else if FPageSize > MAX_PAGE_SIZE then
-				FPageSize := MAX_PAGE_SIZE;
-    except
-      on E: EConvertError do
-				FPageSize := DEFAULT_PAGE_SIZE;
-    end;
-  end;
+		FPageSize := StrToIntDef(PageSizeStr, DEFAULT_PAGE_SIZE);
+		// Validate PageSize
+		if FPageSize <= 0 then
+			FPageSize := DEFAULT_PAGE_SIZE
+		else if FPageSize > MAX_PAGE_SIZE then
+			FPageSize := MAX_PAGE_SIZE;
+	end;
 
   // Try to get PageNumber parameter
 	PageNumberStr := Request.QueryFields.Values['page'];
