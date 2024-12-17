@@ -39,7 +39,7 @@ end;
 
 procedure TPaginationParams.ParsePaginationParams(Request: TWebRequest);
 var
-  PageSizeStr, PageNumberStr: string;
+	PageSizeStr, PageNumberStr: string;
 begin
 	// Initialize with default values
 	FPageSize := DEFAULT_PAGE_SIZE;
@@ -47,8 +47,8 @@ begin
 
 	// Try to get PageSize parameter
 	PageSizeStr := Request.QueryFields.Values['size'];
-  if PageSizeStr <> '' then
-  begin
+	if PageSizeStr <> '' then
+	begin
 		FPageSize := StrToIntDef(PageSizeStr, DEFAULT_PAGE_SIZE);
 		// Validate PageSize
 		if FPageSize <= 0 then
@@ -57,21 +57,15 @@ begin
 			FPageSize := MAX_PAGE_SIZE;
 	end;
 
-  // Try to get PageNumber parameter
+	// Try to get PageNumber parameter
 	PageNumberStr := Request.QueryFields.Values['page'];
-  if PageNumberStr <> '' then
-  begin
-    try
-			FPageNumber := StrToInt(PageNumberStr);
-
-      // Validate PageNumber
-			if FPageNumber <= 0 then
-				FPageNumber := DEFAULT_PAGE_NUMBER;
-    except
-			on E: EConvertError do
-				FPageNumber := DEFAULT_PAGE_NUMBER;
-    end;
-  end;
+	if PageNumberStr <> '' then
+	begin
+		FPageNumber := StrToIntDef(PageNumberStr, DEFAULT_PAGE_NUMBER);
+		// Validate PageNumber
+		if FPageNumber <= 0 then
+	    FPageNumber := DEFAULT_PAGE_NUMBER;
+	end;
 end;
 
 end.
