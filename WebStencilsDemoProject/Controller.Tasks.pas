@@ -1,16 +1,19 @@
 ﻿{
-  This unit implements the controller for the Tasks.
-  It handles CRUD operations for tasks and renders the appropriate templates.
+	This unit implements the controller for the Tasks.
+	It handles CRUD operations for tasks and renders the appropriate templates.
 }
 
-unit Tasks.Controller;
+unit Controller.Tasks;
 
 interface
 
 uses
-  System.SysUtils, Web.HTTPApp, Web.Stencils,
+	System.SysUtils,
+	System.IOUtils,
+	Web.HTTPApp,
+	Web.Stencils,
 
-  Tasks.Model;
+	Model.Tasks;
 
 type
 
@@ -25,7 +28,7 @@ type
     procedure GetEditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
     procedure EditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
     procedure DeleteTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
-    procedure TogglecompletedTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+		procedure TogglecompletedTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
     constructor Create(AWebStencilsEngine: TWebStencilsEngine);
     destructor Destroy; override;
   end;
@@ -39,10 +42,9 @@ uses
 
 function TTasksController.RenderTemplate(ATemplate: string; ATask: TTaskItem = nil): string;
 begin
-  var rootDirectory := FWebStencilsEngine.rootDirectory;
-  FWebStencilsProcessor.InputFileName := FWebStencilsEngine.rootDirectory + 'partials/tasks/' + ATemplate + '.html';
-  if Assigned(ATask) then
-    FWebStencilsProcessor.AddVar('Task', ATask, False);
+	FWebStencilsProcessor.InputFileName := TPath.Combine(FWebStencilsEngine.rootDirectory, 'partials/tasks/' + ATemplate + '.html');
+	if Assigned(ATask) then
+		FWebStencilsProcessor.AddVar('Task', ATask, False);
   Result := FWebStencilsProcessor.Content;
   if Assigned(ATask) then
     FWebStencilsProcessor.DataVars.Remove('Task');

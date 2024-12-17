@@ -14,10 +14,12 @@ uses
   {$ENDIF }
   MainWebModuleU in 'MainWebModuleU.pas' {MainWebModule: TWebModule},
   ServerConst1 in 'ServerConst1.pas',
-  utils.ClassHelpers in 'utils.ClassHelpers.pas',
-  Tasks.Model in 'Tasks.Model.pas',
-  Tasks.Controller in 'Tasks.Controller.pas',
-  CodeExamplesU in 'CodeExamplesU.pas';
+  Helpers.WebModule in 'Helpers.WebModule.pas',
+  Model.Tasks in 'Model.Tasks.pas',
+  Controller.Tasks in 'Controller.Tasks.pas',
+  Controller.Customers in 'Controller.Customers.pas',
+  Helpers.FDQuery in 'Helpers.FDQuery.pas',
+  Model.PaginationParams in 'Model.PaginationParams.pas';
 
 {$R *.res}
 
@@ -36,7 +38,7 @@ end;
 
 function CheckPort(APort: Integer): Integer;
 begin
-  if BindPort(APort) then
+	if BindPort(APort) then
     Result := APort
   else
     Result := 0;

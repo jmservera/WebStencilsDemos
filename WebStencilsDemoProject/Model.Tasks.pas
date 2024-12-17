@@ -3,12 +3,14 @@
   It implements a singleton pattern to manage a list of tasks.
 }
 
-unit Tasks.Model;
+unit Model.Tasks;
 
 interface
 
 uses
-  System.Generics.Collections, System.SysUtils, System.SyncObjs;
+	System.Generics.Collections,
+	System.SysUtils,
+	System.SyncObjs;
 
 type
   TTaskItem = class
