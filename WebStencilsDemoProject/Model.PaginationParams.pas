@@ -24,7 +24,7 @@ type
 		property PageSize: integer read FPageSize;
 		property PageNumber: integer read FPageNumber;
 		property TotalPages: integer read FTotalPages write FTotalPages;
-    property Uri: string read FUri;
+		property Uri: string read FUri;
 	end;
 
 implementation
@@ -55,7 +55,7 @@ begin
 			FPageSize := DEFAULT_PAGE_SIZE
 		else if FPageSize > MAX_PAGE_SIZE then
 			FPageSize := MAX_PAGE_SIZE;
-	end;
+	 end;
 
 	// Try to get PageNumber parameter
 	PageNumberStr := Request.QueryFields.Values['page'];
@@ -64,7 +64,7 @@ begin
 		FPageNumber := StrToIntDef(PageNumberStr, DEFAULT_PAGE_NUMBER);
 		// Validate PageNumber
 		if FPageNumber <= 0 then
-	    FPageNumber := DEFAULT_PAGE_NUMBER;
+			FPageNumber := DEFAULT_PAGE_NUMBER;
 	end;
 end;
 

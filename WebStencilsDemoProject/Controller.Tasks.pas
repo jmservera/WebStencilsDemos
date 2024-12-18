@@ -17,26 +17,26 @@ uses
 
 type
 
-  TTasksController = class
-  private
-    FTasks: TTasks;
-    FWebStencilsProcessor: TWebStencilsProcessor;
-    FWebStencilsEngine: TWebStencilsEngine;
-    function RenderTemplate(ATemplate: string; ATask: TTaskItem = nil): string;
-  public
-    procedure CreateTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
-    procedure GetEditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
-    procedure EditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
-    procedure DeleteTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+	TTasksController = class
+	private
+		FTasks: TTasks;
+		FWebStencilsProcessor: TWebStencilsProcessor;
+		FWebStencilsEngine: TWebStencilsEngine;
+		function RenderTemplate(ATemplate: string; ATask: TTaskItem = nil): string;
+	public
+		procedure CreateTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+		procedure GetEditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+		procedure EditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
+		procedure DeleteTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 		procedure TogglecompletedTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
-    constructor Create(AWebStencilsEngine: TWebStencilsEngine);
-    destructor Destroy; override;
-  end;
+		constructor Create(AWebStencilsEngine: TWebStencilsEngine);
+		destructor Destroy; override;
+	end;
 
 implementation
 
 uses
-  System.NetEncoding;
+	System.NetEncoding;
 
 { TTasksController }
 
@@ -45,31 +45,31 @@ begin
 	FWebStencilsProcessor.InputFileName := TPath.Combine(FWebStencilsEngine.rootDirectory, 'partials/tasks/' + ATemplate + '.html');
 	if Assigned(ATask) then
 		FWebStencilsProcessor.AddVar('Task', ATask, False);
-  Result := FWebStencilsProcessor.Content;
-  if Assigned(ATask) then
-    FWebStencilsProcessor.DataVars.Remove('Task');
+	Result := FWebStencilsProcessor.Content;
+	if Assigned(ATask) then
+		FWebStencilsProcessor.DataVars.Remove('Task');
 end;
 
 constructor TTasksController.Create(AWebStencilsEngine: TWebStencilsEngine);
 begin
-  inherited Create;
-  try
-    FWebStencilsEngine := AWebStencilsEngine;
-    FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
-    FWebStencilsProcessor.Engine := FWebStencilsEngine;
-    FTasks := TTasks.GetInstance;
-    FWebStencilsEngine.AddVar('Tasks', FTasks.AllTasks);
-  except
-    on E: Exception do
-      WriteLn('TTasksController.Create: ' + E.Message);
-  end;
+	inherited Create;
+	try
+		FWebStencilsEngine := AWebStencilsEngine;
+		FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
+		FWebStencilsProcessor.Engine := FWebStencilsEngine;
+		FTasks := TTasks.GetInstance;
+		FWebStencilsEngine.AddVar('Tasks', FTasks.AllTasks);
+	except
+		on E: Exception do
+			WriteLn('TTasksController.Create: ' + E.Message);
+	end;
 end;
 
 destructor TTasksController.Destroy;
 begin
-  FWebStencilsProcessor.Free;
-  FTasks.Free;
-  inherited;
+	FWebStencilsProcessor.Free;
+	FTasks.Free;
+	inherited;
 end;
 
 procedure TTasksController.CreateTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
@@ -108,10 +108,10 @@ end;
 
 procedure TTasksController.TogglecompletedTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
-  var lId := Request.QueryFields.Values['id'];
-  var lTask := FTasks.TogglecompletedTask(lId.ToInteger);
-  Response.Content := RenderTemplate('item', lTask);
-  Handled := True;
+	var lId := Request.QueryFields.Values['id'];
+	var lTask := FTasks.TogglecompletedTask(lId.ToInteger);
+	Response.Content := RenderTemplate('item', lTask);
+	Handled := True;
 end;
 
 end.

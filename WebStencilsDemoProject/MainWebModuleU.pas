@@ -3,40 +3,40 @@
 interface
 
 uses
-  // System units
-  System.Classes,
-  System.Generics.Collections,
-  System.IOUtils,
-  System.SysUtils,
+	 // System units
+	System.Classes,
+	System.Generics.Collections,
+	System.IOUtils,
+	System.SysUtils,
 
-  // Data units
-  Data.DB,
+	// Data units
+	Data.DB,
 
-  // Web units
-  Web.HTTPApp,
-  Web.Stencils,
+	// Web units
+	Web.HTTPApp,
+	Web.Stencils,
 
 	// FireDAC
-  FireDAC.Stan.Async,
-  FireDAC.Stan.Def,
-  FireDAC.Stan.Error,
-  FireDAC.Stan.ExprFuncs,
-  FireDAC.Stan.Intf,
-  FireDAC.Stan.Option,
-  FireDAC.Stan.Param,
-  FireDAC.Stan.Pool,
-  FireDAC.Stan.StorageJSON,
+	FireDAC.Stan.Async,
+	FireDAC.Stan.Def,
+	FireDAC.Stan.Error,
+	FireDAC.Stan.ExprFuncs,
+	FireDAC.Stan.Intf,
+	FireDAC.Stan.Option,
+	FireDAC.Stan.Param,
+	FireDAC.Stan.Pool,
+	FireDAC.Stan.StorageJSON,
 	FireDAC.DApt,
-  FireDAC.DApt.Intf,
-  FireDAC.DatS,
+	FireDAC.DApt.Intf,
+	FireDAC.DatS,
 	FireDAC.Phys,
-  FireDAC.Phys.Intf,
-  FireDAC.Phys.SQLite,
-  FireDAC.Phys.SQLiteDef,
-  FireDAC.Phys.SQLiteWrapper.Stat,
+	FireDAC.Phys.Intf,
+	FireDAC.Phys.SQLite,
+	FireDAC.Phys.SQLiteDef,
+	FireDAC.Phys.SQLiteWrapper.Stat,
 	FireDAC.ConsoleUI.Wait,
-  FireDAC.Comp.Client,
-  FireDAC.Comp.DataSet,
+	FireDAC.Comp.Client,
+	FireDAC.Comp.DataSet,
 	FireDAC.UI.Intf,
 
 	// Own units
@@ -52,7 +52,7 @@ type
 		// Adding to WebStencils an object/component using attributes
 		WebFileDispatcher: TWebFileDispatcher;
 		[WebStencilsVar('customers', false)]
-    Customers: TFDQuery;
+		Customers: TFDQuery;
 		Connection: TFDConnection;
 		constructor Create(AOwner: TComponent); override;
 		destructor Destroy; override;

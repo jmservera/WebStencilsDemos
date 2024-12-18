@@ -3,34 +3,34 @@
 interface
 
 uses
-  System.SysUtils,
-  FireDAC.Comp.Client,
-  FireDAC.Stan.Param,
-  FireDAC.Stan.Option;
+	System.SysUtils,
+	FireDAC.Comp.Client,
+	FireDAC.Stan.Param,
+	FireDAC.Stan.Option;
 
 type
 	TFDQueryHelper = class helper for TFDQuery
-  private
-    class var FCachedRecordCount: Integer;
-    class var FLastCountTime: TDateTime;
+	private
+		class var FCachedRecordCount: Integer;
+		class var FLastCountTime: TDateTime;
 		const CACHE_TIMEOUT = 5; // seconds
-  private
-    function GetPageSize: Integer;
+	private
+		function GetPageSize: Integer;
 		procedure SetPageSize(const Value: Integer);
 		function GetPageNumber: Integer;
 		procedure SetPageNumber(const Value: Integer);
-    function GetTotalPages: Integer;
-    function GetTotalRecords: Integer;
-    procedure RecalculateSkipCount;
-    function GetActualSkipCount: Integer;
-  public
-    property PageSize: Integer read GetPageSize write SetPageSize;
-    property PageNumber: Integer read GetPageNumber write SetPageNumber;
-    property TotalPages: Integer read GetTotalPages;
-    property TotalRecords: Integer read GetTotalRecords;
+		function GetTotalPages: Integer;
+		function GetTotalRecords: Integer;
+		procedure RecalculateSkipCount;
+		function GetActualSkipCount: Integer;
+	public
+		property PageSize: Integer read GetPageSize write SetPageSize;
+		property PageNumber: Integer read GetPageNumber write SetPageNumber;
+		property TotalPages: Integer read GetTotalPages;
+		property TotalRecords: Integer read GetTotalRecords;
 		procedure ApplyPagination;
 		procedure CancelPagination;
-  end;
+	end;
 
 implementation
 
@@ -50,100 +50,100 @@ end;
 function TFDQueryHelper.GetPageSize: Integer;
 begin
 	Result := FetchOptions.RecsMax;
-  if Result <= 0 then
-    Result := MaxInt;
+	if Result <= 0 then
+		Result := MaxInt;
 end;
 
 procedure TFDQueryHelper.SetPageSize(const Value: Integer);
 var
 	LOldPageNumber: Integer;
 begin
-  if Value <= 0 then
-    raise Exception.Create('PageSize must be greater than 0');
+	if Value <= 0 then
+		raise Exception.Create('PageSize must be greater than 0');
 
 	// Store the current page before changing page size
 	LOldPageNumber := PageNumber;
 
-  // Set the new page size
-  FetchOptions.RecsMax := Value;
+	// Set the new page size
+	FetchOptions.RecsMax := Value;
 
-  // Keep the same page number, but recalculate skip count for new page size
+	// Keep the same page number, but recalculate skip count for new page size
 	FetchOptions.RecsSkip := (LOldPageNumber - 1) * Value;
 end;
 
 function TFDQueryHelper.GetPageNumber: Integer;
 begin
-  if PageSize = MaxInt then
-    Result := 1
-  else
-    Result := (GetActualSkipCount div PageSize) + 1;
+	if PageSize = MaxInt then
+		Result := 1
+	else
+		Result := (GetActualSkipCount div PageSize) + 1;
 end;
 
 procedure TFDQueryHelper.SetPageNumber(const Value: Integer);
 begin
-  if Value <= 0 then
-    raise Exception.Create('PageNumber must be greater than 0');
+	if Value <= 0 then
+		raise Exception.Create('PageNumber must be greater than 0');
 
-  // Calculate skip count based on the new page number and current page size
-  FetchOptions.RecsSkip := (Value - 1) * PageSize;
+	// Calculate skip count based on the new page number and current page size
+	FetchOptions.RecsSkip := (Value - 1) * PageSize;
 end;
 
 procedure TFDQueryHelper.RecalculateSkipCount;
 begin
-  FetchOptions.RecsSkip := (PageNumber - 1) * PageSize;
+	FetchOptions.RecsSkip := (PageNumber - 1) * PageSize;
 end;
 
 function TFDQueryHelper.GetTotalRecords: Integer;
 var
-  LCloneQuery: TFDQuery;
+	LCloneQuery: TFDQuery;
 begin
-  // Check cache first
-  if (FCachedRecordCount > 0) and
-     (SecondsBetween(Now, FLastCountTime) < CACHE_TIMEOUT) then
-    Exit(FCachedRecordCount);
+	// Check cache first
+	if (FCachedRecordCount > 0) and
+		 (SecondsBetween(Now, FLastCountTime) < CACHE_TIMEOUT) then
+		Exit(FCachedRecordCount);
 
-  // Cache expired or not set, get fresh count
-  LCloneQuery := TFDQuery.Create(nil);
-  try
-    LCloneQuery.Connection := Self.Connection;
-    LCloneQuery.SQL.Text := Self.SQL.Text;
+	// Cache expired or not set, get fresh count
+	LCloneQuery := TFDQuery.Create(nil);
+	try
+		LCloneQuery.Connection := Self.Connection;
+		LCloneQuery.SQL.Text := Self.SQL.Text;
 
-    if Self.Params.Count > 0 then
+		if Self.Params.Count > 0 then
 			LCloneQuery.Params.AssignValues(Self.Params);
 
-    // Let FireDAC optimize the count operation
-    LCloneQuery.FetchOptions.RecordCountMode := cmTotal;
+		// Let FireDAC optimize the count operation
+		LCloneQuery.FetchOptions.RecordCountMode := cmTotal;
 
-    LCloneQuery.Open;
-    try
-      if LCloneQuery.RecordCount > 0 then
-        Result := LCloneQuery.RecordCount
-      else
-        Result := 0;
+		LCloneQuery.Open;
+		try
+			if LCloneQuery.RecordCount > 0 then
+				Result := LCloneQuery.RecordCount
+			else
+				Result := 0;
 
-      // Update cache
-      FCachedRecordCount := Result;
-      FLastCountTime := Now;
-    finally
-      LCloneQuery.Close;
-    end;
-  finally
-    LCloneQuery.Free;
-  end;
+			// Update cache
+			FCachedRecordCount := Result;
+			FLastCountTime := Now;
+		finally
+			LCloneQuery.Close;
+		end;
+	finally
+		LCloneQuery.Free;
+	end;
 end;
 
 function TFDQueryHelper.GetTotalPages: Integer;
 var
-  LTotalRecs: Integer;
+	LTotalRecs: Integer;
 begin
-  if PageSize = MaxInt then
-    Result := 1
-  else
-  begin
-    LTotalRecs := GetTotalRecords;
-    Result := (LTotalRecs + PageSize - 1) div PageSize;
-    if Result = 0 then
-      Result := 1;
+	if PageSize = MaxInt then
+		Result := 1
+	else
+	begin
+		LTotalRecs := GetTotalRecords;
+		Result := (LTotalRecs + PageSize - 1) div PageSize;
+		if Result = 0 then
+			Result := 1;
 	end;
 end;
 
@@ -155,7 +155,7 @@ begin
 	if not Active then Exit;
 
 	// Save current fetch settings
-  LSavedSkip := FetchOptions.RecsSkip;
+	LSavedSkip := FetchOptions.RecsSkip;
 	LSavedMax := FetchOptions.RecsMax;
 
 	Disconnect;
@@ -174,7 +174,5 @@ begin
 	Disconnect;
 	Open;
 end;
-
-
 
 end.
