@@ -56,7 +56,7 @@ begin
     FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
     FWebStencilsProcessor.Engine := FWebStencilsEngine;
     FTasks := TTasks.GetInstance;
-    FWebStencilsEngine.AddVar('Tasks', FTasks.AllTasks);
+    FWebStencilsEngine.AddVar('Tasks', FTasks);
   except
     on E: Exception do
       WriteLn('TTasksController.Create: ' + E.Message);
@@ -72,15 +72,19 @@ end;
 
 procedure TTasksController.CreateTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
+  FWebStencilsProcessor.WebRequest := Request;
 	var lTask := Request.ContentFields.Values['task'];
 	lTask := TNetEncoding.HTML.Encode(lTask);
 	var lNewTaskItem := FTasks.AddTask(lTask);
-	Response.Content := RenderTemplate('item', lNewTaskItem);
+  var lHTMLResponse := RenderTemplate('item', lNewTaskItem);
+  lHTMLResponse := lHTMLResponse + RenderTemplate('stats');
+	Response.Content := lHTMLResponse;
 	Handled := True;
 end;
 
 procedure TTasksController.DeleteTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
+  FWebStencilsProcessor.WebRequest := Request;
 	var lId := Request.QueryFields.Values['id'];
 	FTasks.DeleteTask(lId.ToInteger);
 	Response.Content := RenderTemplate('card');
@@ -89,6 +93,7 @@ end;
 
 procedure TTasksController.EditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
+  FWebStencilsProcessor.WebRequest := Request;
 	var lId := Request.QueryFields.Values['id'];
 	var lTask := Request.ContentFields.Values['task'];
 	FTasks.EditTask(lId.ToInteger, lTask);
@@ -98,6 +103,7 @@ end;
 
 procedure TTasksController.GetEditTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
+  FWebStencilsProcessor.WebRequest := Request;
 	var lId := Request.QueryFields.Values['id'];
 	var lTask := FTasks.FindTaskById(lId.ToInteger);
 	Response.Content := RenderTemplate('itemEdit', lTask);
@@ -106,9 +112,12 @@ end;
 
 procedure TTasksController.TogglecompletedTask(Sender: TObject; Request: TWebRequest; Response: TWebResponse; var Handled: Boolean);
 begin
+  FWebStencilsProcessor.WebRequest := Request;
   var lId := Request.QueryFields.Values['id'];
   var lTask := FTasks.TogglecompletedTask(lId.ToInteger);
-  Response.Content := RenderTemplate('item', lTask);
+  var lHTMLResponse := RenderTemplate('item', lTask);
+  lHTMLResponse := lHTMLResponse + RenderTemplate('stats');
+	Response.Content := lHTMLResponse;
   Handled := True;
 end;
 

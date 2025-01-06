@@ -1,8 +1,11 @@
 ﻿<div class="card shadow my-5" id="task-card">
+  <div class="card-header">
+		@Import partials/tasks/stats
+  </div>
 	<div class="card-body">
 		@* Form to add new tasks *@
 		<form id="tasks-form" 
-			  hx-post="/tasks/add" 
+			  hx-post="/tasks/add?oob=true" 
 			  hx-target="#task-list" 
 			  hx-swap="beforeend" 
 			  hx-boost="true">
@@ -19,4 +22,5 @@
 		@* This is where the task list will be rendered *@
 		@Import partials/tasks/list
 	</div>
+
 </div>
