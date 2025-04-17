@@ -20,7 +20,7 @@ object TasksResource1: TTasksResource1
       'C:\Users\azapater\Documents\GitHub\InternalWebStencilsDemos\WebS' +
       'tencilsRADServerProject\html\'
     Left = 232
-    Top = 40
+    Top = 32
   end
   object WebStencilsProcessor: TWebStencilsProcessor
     Left = 232
@@ -30,10 +30,8 @@ object TasksResource1: TTasksResource1
     Params.Strings = (
       'User_Name=sysdba'
       'Password=masterkey'
-      'Database=c:\data\tasks.ib'
       'CharacterSet=UTF8'
       'DriverID=IB')
-    Connected = True
     LoginPrompt = False
     Left = 344
     Top = 40

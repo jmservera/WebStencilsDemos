@@ -13,9 +13,10 @@ uses
 	FireDAC.Stan.Async, FireDAC.Phys, FireDAC.ConsoleUI.Wait, Data.DB,
 	FireDAC.Comp.Client, FireDAC.Phys.IB, FireDAC.Phys.IBDef,
 	FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
+  FireDAC.VCLUI.Wait, FireDAC.DApt,
 
 	CodeExamplesU,
-	Tasks.Controller, FireDAC.DApt;
+	Tasks.Controller;
 
 type
 	[ResourceName('web')]
@@ -55,6 +56,9 @@ type
 
 implementation
 
+uses
+  System.IOUtils;
+
 {%CLASSGROUP 'System.Classes.TPersistent'}
 
 {$R *.dfm}
@@ -64,12 +68,13 @@ const
 	// Replace this path with wherever you copy the project in your computer
 	LProjectPath: string = 'C:\path\to\the\project\';
 begin
-	FDConnection.Params.Database := LProjectPath + 'resources\data\tasks.ib';
-	html.PathTemplate := LProjectPath + 'html\{filename}';
-	css.PathTemplate := LProjectPath + 'html\static\css\{filename}';
-	js.PathTemplate := LProjectPath + 'html\static\js\{filename}';
-	img.PathTemplate := LProjectPath + 'html\static\img\{filename}';
-	WebStencilsProcessor.PathTemplate := LProjectPath + 'html\';
+	FDConnection.Params.Database := TPath.Combine(LProjectPath, 'resources\data\tasks.ib');
+	html.PathTemplate := TPath.Combine(LProjectPath, 'html\{filename}');
+	css.PathTemplate := TPath.Combine(LProjectPath, 'html\static\css\{filename}');
+	js.PathTemplate := TPath.Combine(LProjectPath, 'html\static\js\{filename}');
+	img.PathTemplate := TPath.Combine(LProjectPath, 'html\static\img\{filename}');
+	WebStencilsProcessor.PathTemplate := TPath.Combine(LProjectPath, 'html');
+  WebStencilsEngine1.RootDirectory := TPath.Combine(LProjectPath, 'html');
 	AddProcessor(html, WebStencilsEngine1);
 	FCodeExamples := TCodeExamples.Create(WebStencilsEngine1);
 	FTasksController := TTasksController.Create(WebStencilsEngine1, FDConnection);
@@ -79,7 +84,7 @@ procedure TTasksResource1.Get(const AContext: TEndpointContext; const ARequest: 
 var
 	LHTMLContent: string;
 begin
-	WebStencilsProcessor.InputFileName := WebStencilsProcessor.PathTemplate + 'home.html';
+	WebStencilsProcessor.InputFileName := TPath.Combine(WebStencilsProcessor.PathTemplate, 'home.html');
 	LHTMLContent := WebStencilsProcessor.Content;
 	AResponse.Body.SetString(LHTMLContent);
 end;

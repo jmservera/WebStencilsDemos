@@ -36,7 +36,9 @@ requires
   bindengine,
   inetstn,
   emsserverresource,
-  FireDACIBDriver;
+  FireDACIBDriver,
+  vcl,
+  vclFireDAC;
 
 contains
   WebRresource in 'WebRresource.pas' {TasksResource1: TDataModule},

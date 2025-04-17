@@ -34,14 +34,15 @@ implementation
 
 uses
 	System.NetEncoding,
-	System.JSON;
+	System.JSON,
+  System.IOUtils;
 
 { TTasksController }
 
 function TTasksController.RenderTemplate(ATemplate: string; ATask: TTaskItem = nil): string;
 begin
   var rootDirectory := FWebStencilsEngine.rootDirectory;
-  FWebStencilsProcessor.InputFileName := FWebStencilsEngine.rootDirectory + 'partials/tasks/' + ATemplate + '.html';
+  FWebStencilsProcessor.InputFileName := TPath.Combine(rootDirectory, 'partials/tasks/' + ATemplate + '.html');
   if Assigned(ATask) then
     FWebStencilsProcessor.AddVar('Task', ATask, False);
   Result := FWebStencilsProcessor.Content;
