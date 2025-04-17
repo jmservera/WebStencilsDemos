@@ -44,7 +44,8 @@ uses
 	Helpers.FDQuery,
 	Controller.Tasks,
 	Model.Tasks,
-	Controller.Customers;
+	Controller.Customers,
+  CodeExamplesU;
 
 type
 	TMainWebModule = class(TWebModule)
@@ -62,6 +63,7 @@ type
 	private
 		FTasksController: TTasksController;
 		FCustomersController: TCustomersController;
+    FCodeExamples: TCodeExamples;
 		FResourcesPath: string;
 		procedure DefineRoutes;
 		procedure InitRequiredData;
@@ -91,6 +93,7 @@ begin
 	Customers.Active := false;
 	FTasksController.Free;
 	FCustomersController.Free;
+  FCodeExamples.Free;
 	inherited;
 end;
 
@@ -108,13 +111,14 @@ begin
 	// For simplifying the demo, on Windows the path of the templates is on the same project folder. Release deployment would need a fix in the Path
 	var BinaryPath := TPath.GetDirectoryName(ParamStr(0));
 {$IFDEF MSWINDOWS}
-	FResourcesPath := TPath.Combine(BinaryPath, '../../');
+	FResourcesPath := TPath.Combine(BinaryPath, '../../../../resources');
 {$ELSE}
 	FResourcesPath := BinaryPath;
 {$ENDIF}
 	WebStencilsEngine.RootDirectory := TPath.Combine(FResourcesPath, 'html');
 	WebFileDispatcher.RootDirectory := WebStencilsEngine.RootDirectory;
-	Connection.Params.Database := TPath.Combine(FResourcesPath, 'resources/data/database.sqlite3');
+	Connection.Params.Database := TPath.Combine(FResourcesPath, 'data/database.sqlite3');
+  FCodeExamples := TCodeExamples.Create(WebStencilsEngine);
 end;
 
 procedure TMainWebModule.WebStencilsEngineValue(Sender: TObject;
