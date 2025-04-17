@@ -8,18 +8,19 @@ This project demonstrates the usage of WebStencils using WebBroker. It includes 
 ## 🚦 Getting Started
 The project can be run on Windows and Linux. 
 
-On Windows, nothing needs to be done. Run and off you go. The default behavior is trying to get the HTML templates in the same path as the dpr. On a Release environment, the path should be changed. 
+On Windows, nothing needs to be done. Run and off you go. The default behavior is trying to get the HTML templates and database in the same path as the dpr file. On a production environment, the path should be changed. 
 
 To deploy on Linux change the `Build configuration` to `Release`. All the required files are preconfigured in the `Deployment` window. It only needs PAServer running on a Linux machine (it also works with PAServer docker image). Connected to PAServer, run the application or deploy it and execute it directly from the Linux Machine.  
-
-**IMPORTANT**: The codeBlock snippet has a `copy` button. Due to browser security limitations, this only works if the URL is "localhost" or if it's being run under https. If the demo is accessed through the network, the button is not functional. 
 
 ## 📚 Examples 
 ### Docs 
 Most of the menus explain the general use of WebStencils as well as some suggested ideas for templating patterns. 
 
-### Customers
-This demo loads 1000 customers pre-loaded in a FDMemTable. The customers are stored in a JSON file in `resources/data`.
+### Big Table
+This demo loads 1000 customers loaded in a FireDAC query. Customers data is stored in a `sqlite` database in `resources/data`.
+
+### Pagination
+Same `customers` table, but this time using server-side pagination. 
 
 ### To-Do app - HTMX Integration
 The project includes an example of using HTMX with WebStencils for dynamic content updates. See the `tasks.html` template and related Delphi code for implementation details.
@@ -33,13 +34,20 @@ The project consists of the following main components:
 ### 🔑 Key Delphi Units
 - `WebStencilsDemo.dpr`: The main project file that includes WebBroker
 - `MainWebModuleU.pas`: Handles web requests and sets up the WebStencils engine
-- `Tasks.Model.pas` and `Tasks.Controller.pas`: Implement the Tasks demo functionality (Tasks are stored in memory using a singleton)
+- `Model.Tasks.pas` and `Controller.Tasks.pas`: Implement the Tasks demo functionality (Tasks are stored in memory using a singleton)
+- `Controller.Customers.pas`: contains the controller used for `Big Table` and `Pagination` demos. 
+- `Model.PaginationParams.pas` defines a reusable pagination system for WebStencils. 
+- `Helper` namespace: includes multiple class helpers to simplify some of the functionality like simplification for routing in a WebModule or pagination on a FDQuery. 
 - `CodeExamplesU.pas`: Contains code examples used in the demo pages
 
 ### 📄 HTML Templates
 - `layouts/mainLayout.html`: The main layout template
 - Various content pages (e.g., `home.html`, `basics.html`, `keywords.html`)
-- Partial templates in the `partials/` directory
+- Partial templates that can be resused in the `partials/` directory
+- `customers` folder. It includes the templates for `Big Table` and `Pagination` demos, sharing some of the same templates. 
+
+> **IMPORTANT**
+> The `codeBlock` template has a `copy` button. Due to browser security limitations, this only works if the URL is `localhost` or if it's being run under https. If the demo is accessed through the network, the button is not functional. 
 
 ## 💻 Web Tech Used
 - Bootstrap 5.3
@@ -48,3 +56,4 @@ The project consists of the following main components:
 - Minor custom CSS and JS 
 
 All the external dependencies are loaded directly from CDNs. The custom CSS and JS can be found in the `static` folder. 
+

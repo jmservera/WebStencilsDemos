@@ -4,7 +4,7 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>131</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -121,10 +121,12 @@
             <DesignClass>TWebModule</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerConst1.pas"/>
-        <DCCReference Include="utils.ClassHelpers.pas"/>
-        <DCCReference Include="Tasks.Model.pas"/>
-        <DCCReference Include="Tasks.Controller.pas"/>
-        <DCCReference Include="CodeExamplesU.pas"/>
+        <DCCReference Include="Helpers.WebModule.pas"/>
+        <DCCReference Include="Model.Tasks.pas"/>
+        <DCCReference Include="Controller.Tasks.pas"/>
+        <DCCReference Include="Controller.Customers.pas"/>
+        <DCCReference Include="Helpers.FDQuery.pas"/>
+        <DCCReference Include="Model.PaginationParams.pas"/>
         <None Include="README.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -198,6 +200,13 @@
                 <DeployFile LocalName="README.md" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Linux64">
                         <RemoteDir>.\</RemoteDir>
+                        <Enabled>false</Enabled>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="README.md" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -210,6 +219,12 @@
                 </DeployFile>
                 <DeployFile LocalName="README.md" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="README.md" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -252,17 +267,24 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="html\examples\customers.html" Configuration="Release" Class="File">
+                <DeployFile LocalName="html\customers\bigtable.html" Configuration="Release" Class="File">
                     <Platform Name="Linux64">
-                        <RemoteDir>.\html\examples</RemoteDir>
-                        <RemoteName>customers.html</RemoteName>
+                        <RemoteDir>.\html\customers</RemoteDir>
+                        <RemoteName>bigtable.html</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="html\examples\tasks.html" Configuration="Release" Class="File">
+                <DeployFile LocalName="html\customers\pagination.html" Configuration="Release" Class="File">
                     <Platform Name="Linux64">
-                        <RemoteDir>.\html\examples</RemoteDir>
-                        <RemoteName>tasks.html</RemoteName>
+                        <RemoteDir>.\html\customers</RemoteDir>
+                        <RemoteName>pagination.html</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="html\customers\table.html" Configuration="Release" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteDir>.\html\customers</RemoteDir>
+                        <RemoteName>table.html</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -319,6 +341,13 @@
                     <Platform Name="Linux64">
                         <RemoteDir>.\html\partials</RemoteDir>
                         <RemoteName>pageInfo.html</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="html\partials\pagination.html" Configuration="Release" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteDir>.\html\partials</RemoteDir>
+                        <RemoteName>pagination.html</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -385,6 +414,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="html\tasks.html" Configuration="Release" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteDir>.\html</RemoteDir>
+                        <RemoteName>tasks.html</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="html\templates.html" Configuration="Release" Class="File">
                     <Platform Name="Linux64">
                         <RemoteDir>.\html</RemoteDir>
@@ -392,10 +428,17 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="resources\data\customersFireDac.json" Configuration="Release" Class="File">
+                <DeployFile LocalName="resources\data\database.sqlite3" Configuration="Debug" Class="File">
                     <Platform Name="Linux64">
                         <RemoteDir>.\resources\data</RemoteDir>
-                        <RemoteName>customersFireDac.json</RemoteName>
+                        <RemoteName>database.sqlite3</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resources\data\database.sqlite3" Configuration="Release" Class="File">
+                    <Platform Name="Linux64">
+                        <RemoteDir>.\resources\data</RemoteDir>
+                        <RemoteName>database.sqlite3</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

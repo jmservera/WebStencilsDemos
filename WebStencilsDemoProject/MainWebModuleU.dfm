@@ -11,28 +11,11 @@ object MainWebModule: TMainWebModule
       end
       item
         Template = '/{filename}'
-      end
-      item
-        Template = '/examples/{filename}'
       end>
     RootDirectory = '../../html/'
+    OnValue = WebStencilsEngineValue
     Left = 64
     Top = 24
-  end
-  object customers: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 328
-    Top = 184
-  end
-  object FDStanStorageJSONLink1: TFDStanStorageJSONLink
-    Left = 328
-    Top = 120
   end
   object WebFileDispatcher: TWebFileDispatcher
     WebFileExtensions = <
@@ -77,5 +60,23 @@ object MainWebModule: TMainWebModule
     VirtualPath = '/'
     Left = 64
     Top = 88
+  end
+  object Customers: TFDQuery
+    Connection = Connection
+    SQL.Strings = (
+      'SELECT *'
+      'FROM customers')
+    Left = 341
+    Top = 24
+  end
+  object Connection: TFDConnection
+    Params.Strings = (
+      
+        'Database=C:\Users\azapater\Documents\GitHub\WebStencilsDemos\Web' +
+        'StencilsDemoProject\resources\data\database.sqlite3'
+      'DriverID=SQLite')
+    LoginPrompt = False
+    Left = 253
+    Top = 24
   end
 end
