@@ -132,13 +132,11 @@ begin
 	AddRoutes([TRoute.Create(mtDelete, '/tasks', FTasksController.DeleteTask),
 		TRoute.Create(mtPost, '/tasks/add', FTasksController.CreateTask),
 		TRoute.Create(mtGet, '/tasks/edit', FTasksController.GetEditTask),
-		TRoute.Create(mtPut, '/tasks/toggleCompleted',
-		FTasksController.TogglecompletedTask), TRoute.Create(mtPut, '/tasks',
-		FTasksController.EditTask),
+		TRoute.Create(mtPut, '/tasks/toggleCompleted', FTasksController.TogglecompletedTask),
+    TRoute.Create(mtPut, '/tasks', FTasksController.EditTask),
 		// Customers routes
 		TRoute.Create(mtGet, '/bigtable', FCustomersController.GetAllCustomers),
 		TRoute.Create(mtGet, '/pagination', FCustomersController.GetCustomers)
-
 		]);
 end;
 

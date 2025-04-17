@@ -19,7 +19,8 @@ uses
   Controller.Tasks in 'Controller.Tasks.pas',
   Controller.Customers in 'Controller.Customers.pas',
   Helpers.FDQuery in 'Helpers.FDQuery.pas',
-  Model.PaginationParams in 'Model.PaginationParams.pas';
+  Model.PaginationParams in 'Model.PaginationParams.pas',
+  CodeExamplesU in 'CodeExamplesU.pas';
 
 {$R *.res}
 
