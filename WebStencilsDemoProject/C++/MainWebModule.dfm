@@ -60,19 +60,22 @@ object MainWebModule: TMainWebModule
     Left = 48
     Top = 120
   end
-  object customers: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 312
-    Top = 144
+  object Customers: TFDQuery
+    Connection = Connection
+    SQL.Strings = (
+      'SELECT *'
+      'FROM customers')
+    Left = 341
+    Top = 24
   end
-  object FDStanStorageJSONLink1: TFDStanStorageJSONLink
-    Left = 312
-    Top = 88
+  object Connection: TFDConnection
+    Params.Strings = (
+      
+        'Database=C:\Users\azapater\Documents\GitHub\WebStencilsDemos\Web' +
+        'StencilsDemoProject\resources\data\database.sqlite3'
+      'DriverID=SQLite')
+    LoginPrompt = False
+    Left = 253
+    Top = 24
   end
 end

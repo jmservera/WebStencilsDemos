@@ -4,6 +4,7 @@
 #include "TasksController.h"
 #include <System.NetEncoding.hpp>
 #include <System.SysUtils.hpp>
+#include <System.IOUtils.hpp>
 #pragma package(smart_init)
 
 TTasksController::TTasksController(TWebStencilsEngine* AWebStencilsEngine) {
@@ -15,7 +16,7 @@ TTasksController::TTasksController(TWebStencilsEngine* AWebStencilsEngine) {
         FWebStencilsProcessor = new TWebStencilsProcessor(nullptr);
         FWebStencilsProcessor->Engine = FWebStencilsEngine;
         FTasks = TTasks::GetInstance();
-        FWebStencilsEngine->AddVar("Tasks", FTasks->AllTasks);
+        FWebStencilsEngine->AddVar("Tasks", FTasks);
     }
     catch (Exception& E) {
         if (FWebStencilsProcessor) {
@@ -34,7 +35,7 @@ TTasksController::~TTasksController() {
 }
 
 String TTasksController::RenderTemplate(const String& ATemplate, TTaskItem* ATask) {
-    String templatePath = FWebStencilsEngine->RootDirectory + "partials/tasks/" + ATemplate + ".html";
+	String templatePath = TPath::Combine(FWebStencilsEngine->RootDirectory, "partials/tasks/" + ATemplate + ".html");
     
     if (!FileExists(templatePath)) {
         throw Exception("Template file not found: " + templatePath);

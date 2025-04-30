@@ -17,25 +17,46 @@
 #include <FireDAC.Stan.Option.hpp>
 #include <FireDAC.Stan.Param.hpp>
 #include <FireDAC.Stan.StorageJSON.hpp>
+
+// Include own units/controllers
 #include "CodeExamplesU.h"
 #include "ClassHelpers.h"
 #include "TasksController.h"
+#include "ControllerCustomers.h"
+
+// Other FireDAC includes (cleaned up duplicates)
+#include <FireDAC.DApt.hpp>
+#include <FireDAC.Phys.hpp>
+#include <FireDAC.Phys.SQLite.hpp>
+#include <FireDAC.Phys.SQLiteDef.hpp>
+#include <FireDAC.Phys.SQLiteWrapper.Stat.hpp>
+#include <FireDAC.Stan.Async.hpp>
+#include <FireDAC.Stan.Def.hpp>
+#include <FireDAC.Stan.ExprFuncs.hpp>
+#include <FireDAC.Stan.Pool.hpp>
+#include <FireDAC.UI.Intf.hpp>
+#include <FireDAC.VCLUI.Wait.hpp>
+
 //---------------------------------------------------------------------------
 class TMainWebModule : public TWebModule
 {
 __published:	// IDE-managed Components
 	TWebStencilsEngine *WebStencilsEngine;
 	TWebFileDispatcher *WebFileDispatcher;
-	TFDMemTable *customers;
-	TFDStanStorageJSONLink *FDStanStorageJSONLink1;
+	TFDQuery *Customers;
+	TFDConnection *Connection;
 
 private:	// User declarations
 	std::unique_ptr<TTasksController> FTasksController;
+	std::unique_ptr<TCustomersController> FCustomersController;
 	std::unique_ptr<TCodeExamples> FCodeExamples;
+	String FResourcesPath;
+
 	void DefineRoutes();
 	void InitRequiredData();
 	void InitControllers();
-	String FResourcesPath;
+	void __fastcall WebStencilsEngineValue(TObject* Sender, const String AObjectName,
+			const String APropName, String &AReplaceText, bool &AHandled);
 
 public:		// User declarations
 	__fastcall TMainWebModule(TComponent* Owner);

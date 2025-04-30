@@ -8,15 +8,11 @@
 #include <memory>
 #include <string>
 #include "ServerConst1.h"
-#ifdef _WIN32
 #include <windows.h>
 #include <fcntl.h>
 #include <io.h>
-#endif
 
-//---------------------------------------------------------------------------
 USEFORM("MainWebModule.cpp", MainWebModule); /* TWebModule: File Type */
-//---------------------------------------------------------------------------
 #pragma link "Web.WebReq"
 #ifdef USEPACKAGES
 #pragma link "IndySystem.bpi"

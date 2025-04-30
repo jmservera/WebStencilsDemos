@@ -58,7 +58,7 @@ begin
 		FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
 		FWebStencilsProcessor.Engine := FWebStencilsEngine;
 		FTasks := TTasks.GetInstance;
-		FWebStencilsEngine.AddVar('Tasks', FTasks.AllTasks);
+		FWebStencilsEngine.AddVar('Tasks', FTasks);
 	except
 		on E: Exception do
 			WriteLn('TTasksController.Create: ' + E.Message);
