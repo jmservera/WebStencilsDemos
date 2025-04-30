@@ -76,7 +76,7 @@ void __fastcall TCustomersController::GetCustomers(TObject* Sender, TWebRequest*
 	std::unique_ptr<TPaginationParams> LPaginationParams(new TPaginationParams(Request, "pagination"));
 	try
 	{
-		// Use the helper functions for pagination (namespace already specified)
+		// Use the helper functions for pagination
 		FDQueryHelpers::SetPageSize(FCustomers, LPaginationParams->PageSize);
 		FDQueryHelpers::SetPageNumber(FCustomers, LPaginationParams->PageNumber);
 		FDQueryHelpers::ApplyPagination(FCustomers); // Reopens the query with pagination settings

@@ -19,31 +19,6 @@ String MethodTypeToString(TMethodType AMethodType) {
     }
 }
 
-// Approach 1: Inheritance Implementation
-TWebModuleExtended* TWebModuleExtended::AddAction(TMethodType AMethodType,
-                                                 const String& APathInfo,
-                                                 THTTPMethodEvent AOnAction,
-                                                 bool ADefault)
-{
-    TWebActionItem* act = Actions->Add();
-    act->MethodType = AMethodType;
-    act->Name = APathInfo + MethodTypeToString(AMethodType);
-    act->PathInfo = APathInfo;
-    act->OnAction = AOnAction;
-    act->Default = ADefault;
-
-    return this;
-}
-
-void TWebModuleExtended::AddRoutes(const std::vector<TRoute>& ARoutes)
-{
-    for (const auto& Route : ARoutes) {
-        AddAction(Route.MethodType, Route.PathInfo,
-                 Route.OnAction, Route.Default);
-    }
-}
-
-// Approach 2: Utility Class Implementation
 TWebModule* TWebModuleHelper::AddAction(TWebModule* WebModule, TMethodType AMethodType, const String& APathInfo,
     THTTPMethodEvent AOnAction, bool ADefault) {
     TWebActionItem* act = WebModule->Actions->Add();

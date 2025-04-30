@@ -4,6 +4,7 @@
 #include <IdContext.hpp>
 #include <System.IOUtils.hpp> // Include for TPath
 #include <System.DateUtils.hpp> // Include for FormatDateTime
+#include <System.SysUtils.hpp> // Include for SameText and UpperCase
 #include <vector> // Include for std::vector used in DefineRoutes
 
 //---------------------------------------------------------------------------
@@ -34,20 +35,47 @@ __fastcall TMainWebModule::~TMainWebModule()
 		Customers->Active = false;
 	}
 	// Controllers are destroyed automatically by unique_ptr
-	// FCustomersController.reset(); // Implicitly called by unique_ptr destructor
-	// FCodeExamples.reset();
-	// FTasksController.reset();
 }
 //----------------------------------------------------------------------------
 void TMainWebModule::WebStencilsEngineValue(TObject* Sender, const String AObjectName,
 			const String APropName, String &AReplaceText, bool &AHandled)
 {
-	if (SameText(AObjectName, "year"))
+	// Check if we're accessing environment variables
+	if (SameText(AObjectName, "env"))
 	{
-		AReplaceText = FormatDateTime("yyyy", Now());
-		AHandled = true;
+		String envValue;
+		if (FEnvironmentVars && FEnvironmentVars->TryGetValue(APropName.UpperCase(), envValue))
+		{
+			AReplaceText = envValue;
+			AHandled = true;
+		}
+		else
+		{
+			// Format message similar to Delphi version
+			AReplaceText = System::Sysutils::Format("ENV_%s_NOT_FOUND", ARRAYOFCONST((APropName.UpperCase())));
+            AHandled = true; // Important: Handle even if not found to prevent further processing
+		}
 	}
-	// Add more handlers here if needed
+	// Handle dynamic system information
+	else if (SameText(AObjectName, "system"))
+	{
+		if (SameText(APropName, "timestamp"))
+		{
+			AReplaceText = FormatDateTime("yyyy-mm-dd hh:nn:ss", Now());
+			AHandled = true;
+		}
+		else if (SameText(APropName, "year"))
+		{
+			AReplaceText = FormatDateTime("yyyy", Now());
+			AHandled = true;
+		}
+        else
+		{
+			AReplaceText = System::Sysutils::Format("SYSTEM_%s_NOT_FOUND", ARRAYOFCONST((APropName.UpperCase())));
+            AHandled = true; // Handle even if not found
+		}
+	}
+    // Note: The original simple 'year' handler is now covered by the 'system' block above.
 }
 //---------------------------------------------------------------------------
 
@@ -55,7 +83,6 @@ void TMainWebModule::InitControllers()
 {
     FTasksController = std::make_unique<TTasksController>(WebStencilsEngine);
 	FCustomersController = std::make_unique<TCustomersController>(WebStencilsEngine, Customers);
-    // Initialize FCodeExamples here as well, assuming it was missed before
 	FCodeExamples = std::make_unique<TCodeExamples>(WebStencilsEngine);
 }
 
@@ -70,34 +97,38 @@ void TMainWebModule::InitRequiredData()
 			FResourcesPath = System::Ioutils::TPath::GetDirectoryName(GetModuleName(0));
 		#endif
 
-		// Normalize the path to handle potential .. variations
+		// Normalize the path to handle potential variations
 		FResourcesPath = System::Ioutils::TPath::GetFullPath(FResourcesPath);
 
         WebStencilsEngine->RootDirectory = System::Ioutils::TPath::Combine(FResourcesPath, "html");
         WebFileDispatcher->RootDirectory = WebStencilsEngine->RootDirectory;
 
-		// --- Replace JSON loading with DB Path setting ---
 		String dbPath = System::Ioutils::TPath::Combine(FResourcesPath, "data/database.sqlite3");
 
 		// Ensure the Connection component is assigned and configured in the DFM
 		if (Connection)
 		{
 			Connection->Params->Database = dbPath;
-			// Optionally, ensure connection is active or test it
-			// try { Connection->Connected = true; } catch(...) { /* Handle connection error */ }
 		}
 		else
 		{
 			printf("Warning: TFDConnection component 'Connection' is not assigned.\n");
 		}
 
-		// The Customers TFDQuery should be linked to the Connection in the DFM.
-		// We no longer load from JSON. Activate the query if needed (or let controllers handle it).
-		// if (Customers) { Customers->Active = true; } // Optional: Activate here if needed globally
+		// Initialize environment variables dictionary
+		FEnvironmentVars = std::make_unique<System::Generics::Collections::TDictionary__2<System::UnicodeString, System::UnicodeString>>();
+		FEnvironmentVars->Add("APP_VERSION", "1.0.0");
+		FEnvironmentVars->Add("APP_NAME", "WebStencils demo");
+		FEnvironmentVars->Add("APP_EDITION", "WebBroker C++");
+		FEnvironmentVars->Add("COMPANY_NAME", "Embarcadero Inc.");
+#ifdef _DEBUG
+		FEnvironmentVars->Add("DEBUG_MODE", "True");
+#else
+		FEnvironmentVars->Add("DEBUG_MODE", "False");
+#endif
 
-		// Remove the old AddVar for the 'customers' TFDMemTable/TFDQuery.
 		// Controllers will handle providing data to templates.
-        WebStencilsEngine->AddVar("customers", Customers, false); // REMOVED
+        WebStencilsEngine->AddVar("customers", Customers, false);
 		// --- End of DB Path Setting ---
 
     }
@@ -110,13 +141,13 @@ void TMainWebModule::InitRequiredData()
 void TMainWebModule::DefineRoutes()
 {
     std::vector<TRoute> routes = {
-        // Tasks Routes (existing)
+        // Tasks Routes
         TRoute(mtDelete, "/tasks", FTasksController->DeleteTask),
         TRoute(mtPost, "/tasks/add", FTasksController->CreateTask),
         TRoute(mtGet, "/tasks/edit", FTasksController->GetEditTask),
         TRoute(mtPut, "/tasks/toggleCompleted", FTasksController->ToggleCompletedTask),
         TRoute(mtPut, "/tasks", FTasksController->EditTask),
-        // Customers Routes (new)
+		// Customers Routes
 		TRoute(mtGet, "/bigtable", FCustomersController->GetAllCustomers),
 		TRoute(mtGet, "/pagination", FCustomersController->GetCustomers)
     };

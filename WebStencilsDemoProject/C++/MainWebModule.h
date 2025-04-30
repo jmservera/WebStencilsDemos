@@ -17,11 +17,24 @@
 #include <FireDAC.Stan.Option.hpp>
 #include <FireDAC.Stan.Param.hpp>
 #include <FireDAC.Stan.StorageJSON.hpp>
+#include <FireDAC.DApt.hpp>
+#include <FireDAC.Phys.hpp>
+#include <FireDAC.Phys.SQLite.hpp>
+#include <FireDAC.Phys.SQLiteDef.hpp>
+#include <FireDAC.Phys.SQLiteWrapper.Stat.hpp>
+#include <FireDAC.Stan.Async.hpp>
+#include <FireDAC.Stan.Def.hpp>
+#include <FireDAC.Stan.ExprFuncs.hpp>
+#include <FireDAC.Stan.Pool.hpp>
+#include <FireDAC.UI.Intf.hpp>
+#include <FireDAC.VCLUI.Wait.hpp>
+#include <memory> // Required for std::unique_ptr
+#include <System.Generics.Collections.hpp> // Required for TDictionary
 
 // Include own units/controllers
 #include "CodeExamplesU.h"
 #include "ClassHelpers.h"
-#include "TasksController.h"
+#include "ControllerTasks.h"
 #include "ControllerCustomers.h"
 
 // Other FireDAC includes (cleaned up duplicates)
@@ -50,6 +63,7 @@ private:	// User declarations
 	std::unique_ptr<TTasksController> FTasksController;
 	std::unique_ptr<TCustomersController> FCustomersController;
 	std::unique_ptr<TCodeExamples> FCodeExamples;
+	std::unique_ptr<System::Generics::Collections::TDictionary__2<System::UnicodeString, System::UnicodeString>> FEnvironmentVars; // Added environment variables dictionary
 	String FResourcesPath;
 
 	void DefineRoutes();

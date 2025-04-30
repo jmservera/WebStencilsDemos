@@ -6,8 +6,8 @@
 		@* Form to add new tasks *@
 		<form id="tasks-form" 
 			  hx-post="/tasks/add?oob=true" 
-			  hx-target="#task-list" 
-			  hx-swap="beforeend" 
+			  hx-target="#task-card"
+			  hx-swap="outerHTML"
 			  hx-boost="true">
 			<div class="input-group mb-3">
 				<input type="text" class="form-control form-control-lg" name="task" id="task-input"

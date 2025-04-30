@@ -1,7 +1,7 @@
 ﻿#include <vcl.h>
 #pragma hdrstop
 
-#include "TasksController.h"
+#include "ControllerTasks.h"
 #include <System.NetEncoding.hpp>
 #include <System.SysUtils.hpp>
 #include <System.IOUtils.hpp>
@@ -66,7 +66,7 @@ void TTasksController::CreateTask(TObject* Sender, TWebRequest* Request, TWebRes
         }
         task = TNetEncoding::HTML->Encode(task);
         TTaskItem* newTask = FTasks->AddTask(task);
-        Response->Content = RenderTemplate("item", newTask);
+		Response->Content = RenderTemplate("card");
         Handled = true;
     }
     catch (Exception& E) {
@@ -87,7 +87,7 @@ void TTasksController::DeleteTask(TObject* Sender, TWebRequest* Request, TWebRes
             throw Exception("Invalid task ID");
         }
         FTasks->DeleteTask(taskId);
-        Response->Content = RenderTemplate("card");
+		Response->Content = RenderTemplate("card");
         Handled = true;
     }
     catch (Exception& E) {
@@ -168,7 +168,7 @@ void TTasksController::ToggleCompletedTask(TObject* Sender, TWebRequest* Request
             throw Exception("Task not found");
         }
         
-        Response->Content = RenderTemplate("item", task);
+        Response->Content = RenderTemplate("card");
         Handled = true;
     }
     catch (Exception& E) {

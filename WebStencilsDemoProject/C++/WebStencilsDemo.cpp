@@ -13,6 +13,7 @@
 #include <io.h>
 
 USEFORM("MainWebModule.cpp", MainWebModule); /* TWebModule: File Type */
+//---------------------------------------------------------------------------
 #pragma link "Web.WebReq"
 #ifdef USEPACKAGES
 #pragma link "IndySystem.bpi"
@@ -99,7 +100,7 @@ void runServer(int port)
 	std::unique_ptr<TIdHTTPWebBrokerBridge> server(new TIdHTTPWebBrokerBridge(NULL));
 	server->DefaultPort = port;
 
-	// Auto-start the server like in Delphi version
+	// Auto-start the server
 	startServer(server);
 	printf(sServerReady, port);
 

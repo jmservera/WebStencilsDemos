@@ -1,7 +1,7 @@
 ﻿#include <vcl.h>
 #pragma hdrstop
 
-#include "TasksModel.h"
+#include "ModelTasks.h"
 #include <System.SysUtils.hpp>
 #pragma package(smart_init)
 
@@ -14,7 +14,7 @@ TTaskItem::TTaskItem(int AId, const String& ADescription) {
 
 // TTasks implementation
 void __fastcall TTasks::ClassCreate() {
-    // FLock is now initialized in the header
+
 }
 
 void __fastcall TTasks::ClassDestroy() {

@@ -64,6 +64,7 @@ type
 		FTasksController: TTasksController;
 		FCustomersController: TCustomersController;
     FCodeExamples: TCodeExamples;
+    FEnvironmentVars: TDictionary<string, string>;
 		FResourcesPath: string;
 		procedure DefineRoutes;
 		procedure InitRequiredData;
@@ -94,6 +95,7 @@ begin
 	FTasksController.Free;
 	FCustomersController.Free;
   FCodeExamples.Free;
+  FEnvironmentVars.Free;
 	inherited;
 end;
 
@@ -119,14 +121,48 @@ begin
 	WebFileDispatcher.RootDirectory := WebStencilsEngine.RootDirectory;
 	Connection.Params.Database := TPath.Combine(FResourcesPath, 'data/database.sqlite3');
   FCodeExamples := TCodeExamples.Create(WebStencilsEngine);
+
+  FEnvironmentVars := TDictionary<string, string>.Create;
+  // Initialize some environment variables
+  FEnvironmentVars.Add('APP_VERSION', '1.0.0');
+  FEnvironmentVars.Add('APP_NAME', 'WebStencils demo');
+  FEnvironmentVars.Add('APP_EDITION', 'WebBroker Delphi');
+  FEnvironmentVars.Add('COMPANY_NAME', 'Embarcadero Inc.');
+{$IFDEF DEBUG}
+  FEnvironmentVars.Add('DEBUG_MODE', 'True');
+{$ELSE}
+  FEnvironmentVars.Add('DEBUG_MODE', 'False');
+{$ENDIF}
 end;
 
 procedure TMainWebModule.WebStencilsEngineValue(Sender: TObject;
-	const AObjectName, APropName: string; var AReplaceText: string;
-	var AHandled: Boolean);
+  const AObjectName, APropName: string; var AReplaceText: string;
+  var AHandled: Boolean);
 begin
-	if AObjectName = 'year' then
-		AReplaceText := FormatDateTime('yyyy', Now);
+  // Check if we're accessing environment variables
+  if SameText(AObjectName, 'env') then
+  begin
+    if FEnvironmentVars.TryGetValue(APropName.ToUpper, AReplaceText) then
+      AHandled := True
+    else
+      AReplaceText := Format('ENV_%s_NOT_FOUND', [APropName.ToUpper]);
+  end
+  // Handle dynamic system information
+  else if SameText(AObjectName, 'system') then
+  begin
+    if SameText(APropName, 'timestamp') then
+    begin
+      AReplaceText := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now);
+      AHandled := True;
+    end
+    else if SameText(APropName, 'year') then
+    begin
+      AReplaceText := FormatDateTime('yyyy', Now);
+      AHandled := True;
+    end
+    else
+      AReplaceText := Format('SYSTEM_%s_NOT_FOUND', [APropName.ToUpper]);
+  end;
 end;
 
 procedure TMainWebModule.DefineRoutes;

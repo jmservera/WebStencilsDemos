@@ -1,6 +1,6 @@
 // TasksModel.h
-#ifndef TasksModelH
-#define TasksModelH
+#ifndef ModelTasksH
+#define ModelTasksH
 
 #include <System.hpp>
 #include <System.Classes.hpp>
