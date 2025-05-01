@@ -136,6 +136,9 @@
         <DCCReference Include="CodeExamplesU.pas"/>
         <DCCReference Include="Controller.Tasks.pas"/>
         <DCCReference Include="Model.Tasks.pas"/>
+        <DCCReference Include="Helpers.FDQuery.pas"/>
+        <DCCReference Include="Controller.Customers.pas"/>
+        <DCCReference Include="Model.PaginationParams.pas"/>
         <None Include="README.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

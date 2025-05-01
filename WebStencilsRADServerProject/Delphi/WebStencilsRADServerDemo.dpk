@@ -44,6 +44,9 @@ contains
   WebRresource in 'WebRresource.pas' {TasksResource1: TDataModule},
   CodeExamplesU in 'CodeExamplesU.pas',
   Controller.Tasks in 'Controller.Tasks.pas',
-  Model.Tasks in 'Model.Tasks.pas';
+  Model.Tasks in 'Model.Tasks.pas',
+  Helpers.FDQuery in 'Helpers.FDQuery.pas',
+  Controller.Customers in 'Controller.Customers.pas',
+  Model.PaginationParams in 'Model.PaginationParams.pas';
 
 end.

@@ -18,7 +18,8 @@ uses
   System.IOUtils, // Added for TPath
 
 	CodeExamplesU,
-	Controller.Tasks;
+	Controller.Tasks,
+	Controller.Customers;
 
 type
 	{ TEnvironmentSettings: Class to hold environment/application settings for WebStencils }
@@ -57,7 +58,7 @@ type
 		WebStencilsEngine1: TWebStencilsEngine;
 		WebStencilsProcessor: TWebStencilsProcessor;
 		FDConnection: TFDConnection;
-		[WebStencilsVar('customers', false)]
+    [WebStencilsVar('customers', false)]
 		customers: TFDQuery;
 		procedure DataModuleCreate(Sender: TObject);
     procedure WebStencilsEngine1Value(Sender: TObject; const AObjectName,
@@ -65,20 +66,25 @@ type
 	private
 		FCodeExamples: TCodeExamples;
 		FTasksController: TTasksController;
+		FCustomersController: TCustomersController;
     FEnvironmentSettings: TEnvironmentSettings; // Changed from TDictionary
 	published
-		[ResourceSuffix('/')]
+		[ResourceSuffix('./')]
 		procedure Get(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
-		[ResourceSuffix('/tasks')]
+		[ResourceSuffix('./tasks')]
 		procedure DeleteTask(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
-		[ResourceSuffix('/tasks/add')]
+		[ResourceSuffix('./tasks/add')]
 		procedure PostTask(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
-		[ResourceSuffix('/tasks/edit')]
+		[ResourceSuffix('./tasks/edit')]
 		procedure GetTasksEdit(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
-		[ResourceSuffix('/tasks/toggleCompleted')]
+		[ResourceSuffix('./tasks/toggleCompleted')]
 		procedure PutTaskToggleCompleted(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
-		[ResourceSuffix('/tasks')]
+		[ResourceSuffix('./tasks')]
 		procedure PutTask(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
+		[ResourceSuffix('./pagination')]
+		procedure GetPaginatedCustomers(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
+		[ResourceSuffix('./bigtable')]
+		procedure GetAllCustomersEndpoint(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
 	end;
 
 implementation
@@ -113,6 +119,7 @@ const
 	// Replace this path with wherever you copy the project in your computer
 	LProjectPath: string = 'C:\Users\antonio\Documents\GitHub\WebStencilsDemos\resources';
 begin
+
 	FDConnection.Params.Database := TPath.Combine(LProjectPath, 'data\tasks.ib');
 	html.PathTemplate := TPath.Combine(LProjectPath, 'html\{filename}');
 	css.PathTemplate := TPath.Combine(LProjectPath, 'html\static\css\{filename}');
@@ -123,6 +130,7 @@ begin
 	AddProcessor(html, WebStencilsEngine1);
 	FCodeExamples := TCodeExamples.Create(WebStencilsEngine1);
 	FTasksController := TTasksController.Create(WebStencilsEngine1, FDConnection);
+	FCustomersController := TCustomersController.Create(WebStencilsEngine1, customers);
 
   // Create and register the environment settings object
   FEnvironmentSettings := TEnvironmentSettings.Create;
@@ -136,6 +144,7 @@ begin
 	WebStencilsProcessor.InputFileName := TPath.Combine(WebStencilsProcessor.PathTemplate, 'home.html');
 	LHTMLContent := WebStencilsProcessor.Content;
 	AResponse.Body.SetString(LHTMLContent);
+//  AResponse.Body.SetString('Hello World');
 end;
 
 procedure TTasksResource1.DeleteTask(const AContext: TEndpointContext;
@@ -162,12 +171,26 @@ begin
 	FtasksController.TogglecompletedTask(ARequest, AResponse);
 end;
 
+procedure TTasksResource1.PutTask(const AContext: TEndpointContext;
+	const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
+begin
+	FtasksController.EditTask(ARequest, AResponse);
+end;
+
+procedure TTasksResource1.GetPaginatedCustomers(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
+begin
+	FCustomersController.GetCustomers(ARequest, AResponse);
+end;
+
+procedure TTasksResource1.GetAllCustomersEndpoint(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
+begin
+	FCustomersController.GetAllCustomers(ARequest, AResponse);
+end;
+
 procedure TTasksResource1.WebStencilsEngine1Value(Sender: TObject;
   const AObjectName, APropName: string; var AReplaceText: string;
   var AHandled: Boolean);
 begin
-  // env object is now handled by RTTI
-
   // Handle dynamic system information
   if SameText(AObjectName, 'system') then
   begin
@@ -179,12 +202,6 @@ begin
     else
       AReplaceText := Format('SYSTEM_%s_NOT_FOUND', [APropName.ToUpper]);
   end;
-end;
-
-procedure TTasksResource1.PutTask(const AContext: TEndpointContext;
-	const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
-begin
-	FtasksController.EditTask(ARequest, AResponse);
 end;
 
 procedure Register;
