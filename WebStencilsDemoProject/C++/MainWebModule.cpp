@@ -15,6 +15,25 @@
 TComponentClass WebModuleClass = __classid(TMainWebModule);
 //---------------------------------------------------------------------------
 
+// Implementation for TEnvironmentSettings constructor
+__fastcall TEnvironmentSettings::TEnvironmentSettings()
+	: System::Classes::TPersistent()
+{
+	FAppVersion = "1.0.0";
+	FAppName = "WebStencils demo";
+	FAppEdition = "WebBroker C++";
+	FCompanyName = "Embarcadero Inc.";
+	FResource = ""; // Set default for WebBroker
+    FIsRadServer = false;
+#ifdef _DEBUG
+	FDebugMode = true;
+#else
+	FDebugMode = false;
+#endif
+}
+
+//---------------------------------------------------------------------------
+
 __fastcall TMainWebModule::TMainWebModule(TComponent* Owner)
 	: TWebModule(Owner)
 {
@@ -34,48 +53,31 @@ __fastcall TMainWebModule::~TMainWebModule()
 	{
 		Customers->Active = false;
 	}
-	// Controllers are destroyed automatically by unique_ptr
+	// Controllers and FEnvironmentSettings are destroyed automatically by unique_ptr
 }
 //----------------------------------------------------------------------------
 void TMainWebModule::WebStencilsEngineValue(TObject* Sender, const String AObjectName,
 			const String APropName, String &AReplaceText, bool &AHandled)
 {
-	// Check if we're accessing environment variables
-	if (SameText(AObjectName, "env"))
-	{
-		String envValue;
-		if (FEnvironmentVars && FEnvironmentVars->TryGetValue(APropName.UpperCase(), envValue))
-		{
-			AReplaceText = envValue;
-			AHandled = true;
-		}
-		else
-		{
-			// Format message similar to Delphi version
-			AReplaceText = System::Sysutils::Format("ENV_%s_NOT_FOUND", ARRAYOFCONST((APropName.UpperCase())));
-            AHandled = true; // Important: Handle even if not found to prevent further processing
-		}
-	}
+	// env object is now handled by RTTI via AddVar
+
 	// Handle dynamic system information
-	else if (SameText(AObjectName, "system"))
+	if (SameText(AObjectName, "system"))
 	{
+		AHandled = true; // Handle all system properties here
 		if (SameText(APropName, "timestamp"))
 		{
 			AReplaceText = FormatDateTime("yyyy-mm-dd hh:nn:ss", Now());
-			AHandled = true;
 		}
 		else if (SameText(APropName, "year"))
 		{
 			AReplaceText = FormatDateTime("yyyy", Now());
-			AHandled = true;
 		}
         else
 		{
 			AReplaceText = System::Sysutils::Format("SYSTEM_%s_NOT_FOUND", ARRAYOFCONST((APropName.UpperCase())));
-            AHandled = true; // Handle even if not found
 		}
 	}
-    // Note: The original simple 'year' handler is now covered by the 'system' block above.
 }
 //---------------------------------------------------------------------------
 
@@ -115,17 +117,11 @@ void TMainWebModule::InitRequiredData()
 			printf("Warning: TFDConnection component 'Connection' is not assigned.\n");
 		}
 
-		// Initialize environment variables dictionary
-		FEnvironmentVars = std::make_unique<System::Generics::Collections::TDictionary__2<System::UnicodeString, System::UnicodeString>>();
-		FEnvironmentVars->Add("APP_VERSION", "1.0.0");
-		FEnvironmentVars->Add("APP_NAME", "WebStencils demo");
-		FEnvironmentVars->Add("APP_EDITION", "WebBroker C++");
-		FEnvironmentVars->Add("COMPANY_NAME", "Embarcadero Inc.");
-#ifdef _DEBUG
-		FEnvironmentVars->Add("DEBUG_MODE", "True");
-#else
-		FEnvironmentVars->Add("DEBUG_MODE", "False");
-#endif
+		// Initialize environment settings object
+		FEnvironmentSettings = std::make_unique<TEnvironmentSettings>();
+		// Add the settings object instance to the engine
+		// Note: .get() passes the raw pointer, ownership remains with unique_ptr
+        WebStencilsEngine->AddVar("env", FEnvironmentSettings.get());
 
 		// Controllers will handle providing data to templates.
         WebStencilsEngine->AddVar("customers", Customers, false);

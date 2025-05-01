@@ -1,6 +1,6 @@
 ﻿# WebStencils Demo Project
 
-![WebStencils screenshot](../.github/images/WebBroker.png)
+![WebStencils screenshot](../../.github/images/WebBroker.png)
 
 ## 🌟 Overview 
 This project demonstrates the usage of WebStencils using WebBroker. It includes part of the documentation built into the generated website, as well as a couple of demos. 
@@ -55,5 +55,10 @@ The project consists of the following main components:
 - HTMX 2.0.2
 - Minor custom CSS and JS 
 
-All the external dependencies are loaded directly from CDNs. The custom CSS and JS can be found in the `static` folder. 
+All the external dependencies are loaded directly from CDNs. The custom CSS and JS can be found in the `static` folder.
+
+## ✨ Environment Variables
+- The `MainWebModuleU` demonstrates handling custom variables (using `TDictionary<string, string>`) accessible in templates via `@env.VARIABLE_NAME` (e.g., `@env.APP_NAME`, `@env.APP_EDITION`).
+- It also shows handling system variables like `@system.year` and `@system.timestamp` via the `WebStencilsEngineValue` event.
+- The `DEBUG_MODE` variable is automatically set based on the build configuration using the `{$IFDEF DEBUG}` compiler directive.
 

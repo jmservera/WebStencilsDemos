@@ -134,8 +134,8 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="CodeExamplesU.pas"/>
-        <DCCReference Include="Tasks.Controller.pas"/>
-        <DCCReference Include="Tasks.Model.pas"/>
+        <DCCReference Include="Controller.Tasks.pas"/>
+        <DCCReference Include="Model.Tasks.pas"/>
         <None Include="README.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -176,7 +176,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\..\..\Public\Documents\Embarcadero\Studio\23.0\Bpl\WebStencilsRADServerDemo.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\..\..\..\Public\Documents\Embarcadero\Studio\23.0\Bpl\WebStencilsRADServerDemo.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>WebStencilsRADServerDemo.bpl</RemoteName>
                         <Overwrite>true</Overwrite>

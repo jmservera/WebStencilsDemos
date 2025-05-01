@@ -14,21 +14,45 @@ uses
 	FireDAC.Comp.Client, FireDAC.Phys.IB, FireDAC.Phys.IBDef,
 	FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
   FireDAC.VCLUI.Wait, FireDAC.DApt,
+  System.Generics.Collections,
+  System.IOUtils, // Added for TPath
 
 	CodeExamplesU,
-	Tasks.Controller;
+	Controller.Tasks;
 
 type
+	{ TEnvironmentSettings: Class to hold environment/application settings for WebStencils }
+	TEnvironmentSettings = class(TPersistent)
+	private
+		FAppVersion: string;
+		FAppName: string;
+		FAppEdition: string;
+		FCompanyName: string;
+		FResource: string;
+		FIsRadServer: Boolean;
+		FDebugMode: Boolean;
+	public
+		constructor Create;
+	published
+		property AppVersion: string read FAppVersion;
+		property AppName: string read FAppName;
+		property AppEdition: string read FAppEdition;
+		property CompanyName: string read FCompanyName;
+		property Resource: string read FResource; // Required for RAD Server compatibility
+		property IsRadServer: Boolean read FIsRadServer;
+		property DebugMode: Boolean read FDebugMode;
+	end;
+
 	[ResourceName('web')]
 	TTasksResource1 = class(TDataModule)
 //		[ResourceSuffix('./')]
 		[ResourceSuffix('get', '/{filename}')]
 		html: TEMSFileResource;
-		[ResourceSuffix('get', '/css/{filename}')]
+		[ResourceSuffix('get', '/static/css/{filename}')]
 		css: TEMSFileResource;
-		[ResourceSuffix('get', '/js/{filename}')]
+		[ResourceSuffix('get', '/static/js/{filename}')]
 		js: TEMSFileResource;
-		[ResourceSuffix('get', '/img/{filename}')]
+		[ResourceSuffix('get', '/static/img/{filename}')]
 		img: TEMSFileResource;
 		WebStencilsEngine1: TWebStencilsEngine;
 		WebStencilsProcessor: TWebStencilsProcessor;
@@ -36,9 +60,12 @@ type
 		[WebStencilsVar('customers', false)]
 		customers: TFDQuery;
 		procedure DataModuleCreate(Sender: TObject);
+    procedure WebStencilsEngine1Value(Sender: TObject; const AObjectName,
+      APropName: string; var AReplaceText: string; var AHandled: Boolean);
 	private
 		FCodeExamples: TCodeExamples;
 		FTasksController: TTasksController;
+    FEnvironmentSettings: TEnvironmentSettings; // Changed from TDictionary
 	published
 		[ResourceSuffix('/')]
 		procedure Get(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
@@ -56,19 +83,37 @@ type
 
 implementation
 
-uses
-  System.IOUtils;
-
 {%CLASSGROUP 'System.Classes.TPersistent'}
 
 {$R *.dfm}
 
+{ TEnvironmentSettings }
+
+constructor TEnvironmentSettings.Create;
+begin
+	inherited Create;
+	// Initialize properties for RAD Server context
+	FAppVersion := '1.0.0';
+	FAppName := 'WebStencils demo';
+	FAppEdition := 'RAD Server Delphi';
+	FCompanyName := 'Embarcadero Inc.';
+	FResource := '/web'; // Set RAD Server resource endpoint
+	FIsRadServer := True;
+{$IFDEF DEBUG}
+	FDebugMode := True;
+{$ELSE}
+	FDebugMode := False;
+{$ENDIF}
+end;
+
+{ TTasksResource1 }
+
 procedure TTasksResource1.DataModuleCreate(Sender: TObject);
 const
 	// Replace this path with wherever you copy the project in your computer
-	LProjectPath: string = 'C:\path\to\the\project\';
+	LProjectPath: string = 'C:\Users\antonio\Documents\GitHub\WebStencilsDemos\resources';
 begin
-	FDConnection.Params.Database := TPath.Combine(LProjectPath, 'resources\data\tasks.ib');
+	FDConnection.Params.Database := TPath.Combine(LProjectPath, 'data\tasks.ib');
 	html.PathTemplate := TPath.Combine(LProjectPath, 'html\{filename}');
 	css.PathTemplate := TPath.Combine(LProjectPath, 'html\static\css\{filename}');
 	js.PathTemplate := TPath.Combine(LProjectPath, 'html\static\js\{filename}');
@@ -78,6 +123,10 @@ begin
 	AddProcessor(html, WebStencilsEngine1);
 	FCodeExamples := TCodeExamples.Create(WebStencilsEngine1);
 	FTasksController := TTasksController.Create(WebStencilsEngine1, FDConnection);
+
+  // Create and register the environment settings object
+  FEnvironmentSettings := TEnvironmentSettings.Create;
+  WebStencilsEngine1.AddVar('env', FEnvironmentSettings);
 end;
 
 procedure TTasksResource1.Get(const AContext: TEndpointContext; const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
@@ -113,6 +162,25 @@ begin
 	FtasksController.TogglecompletedTask(ARequest, AResponse);
 end;
 
+procedure TTasksResource1.WebStencilsEngine1Value(Sender: TObject;
+  const AObjectName, APropName: string; var AReplaceText: string;
+  var AHandled: Boolean);
+begin
+  // env object is now handled by RTTI
+
+  // Handle dynamic system information
+  if SameText(AObjectName, 'system') then
+  begin
+    AHandled := True; // Handle all system properties here
+    if SameText(APropName, 'timestamp') then
+      AReplaceText := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now)
+    else if SameText(APropName, 'year') then
+      AReplaceText := FormatDateTime('yyyy', Now)
+    else
+      AReplaceText := Format('SYSTEM_%s_NOT_FOUND', [APropName.ToUpper]);
+  end;
+end;
+
 procedure TTasksResource1.PutTask(const AContext: TEndpointContext;
 	const ARequest: TEndpointRequest; const AResponse: TEndpointResponse);
 begin
@@ -127,5 +195,6 @@ end;
 initialization
 	Register;
 end.
+
 
 

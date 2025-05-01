@@ -3,14 +3,14 @@
   It handles CRUD operations for tasks and renders the appropriate templates.
 }
 
-unit Tasks.Controller;
+unit Controller.Tasks;
 
 interface
 
 uses
   System.SysUtils, Web.HTTPApp, Web.Stencils, EMS.ResourceAPI, FireDAC.Comp.Client,
 
-  Tasks.Model;
+  Model.Tasks;
 
 type
 
@@ -58,7 +58,7 @@ begin
 		FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
 		FWebStencilsProcessor.Engine := FWebStencilsEngine;
 		FTasks := TTasks.Create(AFDConnection);
-		FWebStencilsEngine.AddVar('Tasks', FTasks.AllTasks);
+		FWebStencilsEngine.AddVar('Tasks', FTasks);
 	except
     on E: Exception do
       WriteLn('TTasksController.Create: ' + E.Message);
@@ -80,8 +80,8 @@ begin
 	if not(ARequest.Body.TryGetObject(lJSON) and lJSON.TryGetValue<string>('task', lTaskDescription)) then
 		AResponse.RaiseBadRequest('Bad request', 'Missing data');
 	lTaskDescription := TNetEncoding.HTML.Encode(lTaskDescription);
-	var lNewTaskItem := FTasks.AddTask(lTaskDescription);
-	AResponse.Body.SetString(RenderTemplate('item', lNewTaskItem));
+	FTasks.AddTask(lTaskDescription);
+	AResponse.Body.SetString(RenderTemplate('card'));
 end;
 
 procedure TTasksController.DeleteTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
@@ -113,8 +113,8 @@ end;
 procedure TTasksController.TogglecompletedTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
 begin
 	var lId := ARequest.Params.Values['id'];
-	var lTask := FTasks.TogglecompletedTask(lId.ToInteger);
-	AResponse.Body.SetString(RenderTemplate('item', lTask));
+	FTasks.TogglecompletedTask(lId.ToInteger);
+	AResponse.Body.SetString(RenderTemplate('card'));
 end;
 
 end.

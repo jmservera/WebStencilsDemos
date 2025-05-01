@@ -43,7 +43,7 @@ requires
 contains
   WebRresource in 'WebRresource.pas' {TasksResource1: TDataModule},
   CodeExamplesU in 'CodeExamplesU.pas',
-  Tasks.Controller in 'Tasks.Controller.pas',
-  Tasks.Model in 'Tasks.Model.pas';
+  Controller.Tasks in 'Controller.Tasks.pas',
+  Model.Tasks in 'Model.Tasks.pas';
 
 end.

@@ -45,9 +45,31 @@ uses
 	Controller.Tasks,
 	Model.Tasks,
 	Controller.Customers,
-  CodeExamplesU;
+    CodeExamplesU;
 
 type
+	{ TEnvironmentSettings: Class to hold environment/application settings for WebStencils }
+	TEnvironmentSettings = class(TPersistent)
+	private
+		FAppVersion: string;
+		FAppName: string;
+		FAppEdition: string;
+		FCompanyName: string;
+		FResource: string;
+		FDebugMode: Boolean;
+    FIsRadServer: Boolean;
+	public
+		constructor Create;		
+	published
+		property AppVersion: string read FAppVersion;
+		property AppName: string read FAppName;
+		property AppEdition: string read FAppEdition;
+		property CompanyName: string read FCompanyName;
+		property Resource: string read FResource; // Required for RAD Server compatibility
+		property DebugMode: Boolean read FDebugMode;
+		property IsRadServer: Boolean read FIsRadServer;
+	end;
+
 	TMainWebModule = class(TWebModule)
 		WebStencilsEngine: TWebStencilsEngine;
 		// Adding to WebStencils an object/component using attributes
@@ -63,8 +85,8 @@ type
 	private
 		FTasksController: TTasksController;
 		FCustomersController: TCustomersController;
-    FCodeExamples: TCodeExamples;
-    FEnvironmentVars: TDictionary<string, string>;
+		FCodeExamples: TCodeExamples;
+		FEnvironmentSettings: TEnvironmentSettings;
 		FResourcesPath: string;
 		procedure DefineRoutes;
 		procedure InitRequiredData;
@@ -81,6 +103,28 @@ implementation
 {%CLASSGROUP 'System.Classes.TPersistent'}
 {$R *.dfm}
 
+{ TEnvironmentSettings }
+
+constructor TEnvironmentSettings.Create;
+begin
+	inherited Create;
+	// Initialize properties
+	FAppVersion := '1.0.0';
+	FAppName := 'WebStencils demo';
+	FAppEdition := 'WebBroker Delphi';
+	FCompanyName := 'Embarcadero Inc.';
+	// This RESOURCE env is required to make the WebStencils templates reusable for RAD Server
+	FResource := '';
+{$IFDEF DEBUG}
+	FDebugMode := True;
+{$ELSE}
+	FDebugMode := False;
+{$ENDIF}
+  FIsRadServer := False;
+end;
+
+{ TMainWebModule }
+
 constructor TMainWebModule.Create(AOwner: TComponent);
 begin
 	inherited;
@@ -95,7 +139,7 @@ begin
 	FTasksController.Free;
 	FCustomersController.Free;
   FCodeExamples.Free;
-  FEnvironmentVars.Free;
+  FEnvironmentSettings.Free; // Free the settings object
 	inherited;
 end;
 
@@ -122,46 +166,26 @@ begin
 	Connection.Params.Database := TPath.Combine(FResourcesPath, 'data/database.sqlite3');
   FCodeExamples := TCodeExamples.Create(WebStencilsEngine);
 
-  FEnvironmentVars := TDictionary<string, string>.Create;
-  // Initialize some environment variables
-  FEnvironmentVars.Add('APP_VERSION', '1.0.0');
-  FEnvironmentVars.Add('APP_NAME', 'WebStencils demo');
-  FEnvironmentVars.Add('APP_EDITION', 'WebBroker Delphi');
-  FEnvironmentVars.Add('COMPANY_NAME', 'Embarcadero Inc.');
-{$IFDEF DEBUG}
-  FEnvironmentVars.Add('DEBUG_MODE', 'True');
-{$ELSE}
-  FEnvironmentVars.Add('DEBUG_MODE', 'False');
-{$ENDIF}
+  // Create the environment settings object
+  FEnvironmentSettings := TEnvironmentSettings.Create;
+  // Add the settings object itself to the engine under the name 'env'
+  WebStencilsEngine.AddVar('env', FEnvironmentSettings);
 end;
 
 procedure TMainWebModule.WebStencilsEngineValue(Sender: TObject;
   const AObjectName, APropName: string; var AReplaceText: string;
   var AHandled: Boolean);
-begin
-  // Check if we're accessing environment variables
-  if SameText(AObjectName, 'env') then
-  begin
-    if FEnvironmentVars.TryGetValue(APropName.ToUpper, AReplaceText) then
-      AHandled := True
-    else
-      AReplaceText := Format('ENV_%s_NOT_FOUND', [APropName.ToUpper]);
-  end
+begin  
   // Handle dynamic system information
-  else if SameText(AObjectName, 'system') then
-  begin
+  if SameText(AObjectName, 'system') then
+  begin      
     if SameText(APropName, 'timestamp') then
-    begin
-      AReplaceText := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now);
-      AHandled := True;
-    end
+      AReplaceText := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now)
     else if SameText(APropName, 'year') then
-    begin
-      AReplaceText := FormatDateTime('yyyy', Now);
-      AHandled := True;
-    end
+      AReplaceText := FormatDateTime('yyyy', Now)
     else
       AReplaceText := Format('SYSTEM_%s_NOT_FOUND', [APropName.ToUpper]);
+	AHandled := True;      
   end;
 end;
 

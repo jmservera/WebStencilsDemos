@@ -1,6 +1,6 @@
 ﻿# WebStencils Demo - RAD Server Project
 
-![WebStencils RAD Server screenshot](../.github/images/WebStencils-RADServer.png)
+![WebStencils RAD Server screenshot](../../.github/images/WebStencils-RADServer.png)
 
 ## 🌟 Overview 
 This project demonstrates the usage of WebStencils with RAD Server. It includes part of the documentation built into the generated website, as well as a couple of demos. 

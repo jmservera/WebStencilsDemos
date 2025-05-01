@@ -51,6 +51,33 @@
 #include <FireDAC.VCLUI.Wait.hpp>
 
 //---------------------------------------------------------------------------
+
+// Define the Environment Settings class
+class TEnvironmentSettings : public System::Classes::TPersistent
+{
+private:
+	System::UnicodeString FAppVersion;
+	System::UnicodeString FAppName;
+	System::UnicodeString FAppEdition;
+	System::UnicodeString FCompanyName;
+	System::UnicodeString FResource;
+	bool FDebugMode;
+	bool FIsRadServer;
+
+public:
+	__fastcall TEnvironmentSettings();
+
+__published:
+	__property System::UnicodeString AppVersion = {read=FAppVersion};
+	__property System::UnicodeString AppName = {read=FAppName};
+	__property System::UnicodeString AppEdition = {read=FAppEdition};
+	__property System::UnicodeString CompanyName = {read=FCompanyName};
+	__property System::UnicodeString Resource = {read=FResource};
+	__property bool DebugMode = {read=FDebugMode};
+	__property bool IsRadServer = {read=FIsRadServer};
+};
+
+//---------------------------------------------------------------------------
 class TMainWebModule : public TWebModule
 {
 __published:	// IDE-managed Components
@@ -63,7 +90,7 @@ private:	// User declarations
 	std::unique_ptr<TTasksController> FTasksController;
 	std::unique_ptr<TCustomersController> FCustomersController;
 	std::unique_ptr<TCodeExamples> FCodeExamples;
-	std::unique_ptr<System::Generics::Collections::TDictionary__2<System::UnicodeString, System::UnicodeString>> FEnvironmentVars; // Added environment variables dictionary
+	std::unique_ptr<TEnvironmentSettings> FEnvironmentSettings; // Changed from TDictionary unique_ptr
 	String FResourcesPath;
 
 	void DefineRoutes();
