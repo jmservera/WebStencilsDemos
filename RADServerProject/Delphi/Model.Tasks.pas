@@ -8,40 +8,40 @@ unit Model.Tasks;
 interface
 
 uses
-	System.Generics.Collections,
-	System.SysUtils,
-	System.SyncObjs,
-	System.Classes,
+  System.Generics.Collections,
+  System.SysUtils,
+  System.SyncObjs,
+  System.Classes,
   System.Variants,
-	FireDAC.Comp.Client;
+  FireDAC.Comp.Client;
 
 type
-	TTaskItem = class(TPersistent)
+  TTaskItem = class(TPersistent)
   private
     FId: Integer;
     FDescription: string;
     FCompleted: Boolean;
-	public
-		constructor Create(AId: Integer; const ADescription: string; const Acompleted: boolean = false);
+  public
+    constructor Create(AId: Integer; const ADescription: string; const Acompleted: boolean = false);
     property Id: Integer read FId;
-   	property Description: string read FDescription write FDescription;
+     property Description: string read FDescription write FDescription;
     property Completed: Boolean read FCompleted write FCompleted;
   published
     property TaskId: Integer read FId;
-   	property TaskDescription: string read FDescription;
+     property TaskDescription: string read FDescription;
     property IsCompleted: Boolean read FCompleted;
   end;
 
   TTasks = class(TObject)
   private
-		FDConnection: TFDConnection;
+    FDConnection: TFDConnection;
 
-		function GetCount: Integer;
-		function GetCompletedCount: Integer;
-		function GetAllTasks: TObjectList<TTaskItem>;
-	public
-		constructor Create(AFDConnection: TFDConnection);
-		function FindTaskById(AId: Integer): TTaskItem;
+    function GetCount: Integer;
+    function GetCompletedCount: Integer;
+    function GetAllTasks: TObjectList<TTaskItem>;
+  public
+    constructor Create(AFDConnection: TFDConnection);
+    function FindTaskById(AId: Integer): TTaskItem;
     procedure AddTask(const ADescription: string);
     procedure EditTask(AId: Integer; ADescription: string);
     procedure DeleteTask(AId: Integer);
@@ -60,10 +60,10 @@ uses Data.DB;
 
 constructor TTaskItem.Create(AId: Integer; const ADescription: string; const Acompleted: boolean = false);
 begin
-	inherited Create;
-	FId := AId;
-	FDescription := ADescription;
-	FCompleted := Acompleted;
+  inherited Create;
+  FId := AId;
+  FDescription := ADescription;
+  FCompleted := Acompleted;
 end;
 
 { TTasks }
@@ -71,12 +71,12 @@ end;
 constructor TTasks.Create(AFDConnection: TFDConnection);
 begin
   inherited Create;
-	FDConnection := AFDConnection;
+  FDConnection := AFDConnection;
 end;
 
 procedure TTasks.EditTask(AId: Integer; ADescription: string);
 begin
-	FDConnection.ExecSQL('UPDATE tasks SET description = :description WHERE id = :id', [ADescription, AId]);
+  FDConnection.ExecSQL('UPDATE tasks SET description = :description WHERE id = :id', [ADescription, AId]);
 end;
 
 procedure TTasks.AddTask(const ADescription: string);
@@ -98,18 +98,18 @@ begin
     LQuery.Free;
   end;
 
-	FDConnection.ExecSQL('INSERT INTO tasks(id, description, completed) VALUES (:id, :description, :completed)',
+  FDConnection.ExecSQL('INSERT INTO tasks(id, description, completed) VALUES (:id, :description, :completed)',
     [LNextId, ADescription, False]);
 end;
 
 procedure TTasks.ToggleCompletedTask(AId: Integer);
 begin
-	FDConnection.ExecSQL('EXECUTE PROCEDURE toggle_completed_task :id', [AId]);
+  FDConnection.ExecSQL('EXECUTE PROCEDURE toggle_completed_task :id', [AId]);
 end;
 
 procedure TTasks.DeleteTask(AId: Integer);
 begin
-	FDConnection.ExecSQL('DELETE FROM tasks WHERE id = :1', [AId]);
+  FDConnection.ExecSQL('DELETE FROM tasks WHERE id = :1', [AId]);
 end;
 
 function TTasks.GetCompletedCount: Integer;
@@ -120,27 +120,27 @@ end;
 
 function TTasks.GetAllTasks: TObjectList<TTaskItem>;
 var
-	LItems: TObjectList<TTaskItem>;
-	LQuery: TFDQuery;
+  LItems: TObjectList<TTaskItem>;
+  LQuery: TFDQuery;
 begin
   LItems := TObjectList<TTaskItem>.Create(True);
-	LQuery := TFDQuery.Create(nil);
-	try
-		LQuery.Connection := FDConnection;
-		LQuery.SQL.Text := 'SELECT * FROM tasks ORDER BY id';
-		LQuery.Open;
-		while not LQuery.Eof do
-		begin
-			LItems.Add(TTaskItem.Create( LQuery.FieldByName('id').AsInteger,
-                                  LQuery.FieldByName('description').AsString,
-                                  LQuery.FieldByName('completed').AsBoolean));
-			LQuery.Next;
-		end;
-		Result := LItems;
-		LQuery.Close;
-	finally
-		LQuery.Free;
-	end;
+  LQuery := TFDQuery.Create(nil);
+  try
+    LQuery.Connection := FDConnection;
+    LQuery.SQL.Text := 'SELECT * FROM tasks ORDER BY id';
+    LQuery.Open;
+    while not LQuery.Eof do
+    begin
+      LItems.Add(TTaskItem.Create( LQuery.FieldByName('id').AsInteger,
+                                   LQuery.FieldByName('description').AsString,
+                                   LQuery.FieldByName('completed').AsBoolean));
+      LQuery.Next;
+    end;
+    Result := LItems;
+    LQuery.Close;
+  finally
+    LQuery.Free;
+  end;
 end;
 
 function TTasks.GetCount: Integer;
@@ -162,7 +162,7 @@ begin
     LQuery.Open;
     if not LQuery.Eof then
     begin
-       Result := TTaskItem.Create( LQuery.FieldByName('id').AsInteger,
+      Result := TTaskItem.Create( LQuery.FieldByName('id').AsInteger,
                                   LQuery.FieldByName('description').AsString,
                                   LQuery.FieldByName('completed').AsBoolean);
     end;

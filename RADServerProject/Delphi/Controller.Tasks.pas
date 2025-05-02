@@ -21,20 +21,20 @@ type
     FWebStencilsEngine: TWebStencilsEngine;
     function RenderTemplate(ATemplate: string; ATask: TTaskItem = nil): string;
   public
-		procedure CreateTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
-		procedure GetEditTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
-		procedure EditTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
-		procedure DeleteTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
-		procedure TogglecompletedTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
-		constructor Create(AWebStencilsEngine: TWebStencilsEngine; AFDConnection: TFDConnection);
+    procedure CreateTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
+    procedure GetEditTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
+    procedure EditTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
+    procedure DeleteTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
+    procedure TogglecompletedTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
+    constructor Create(AWebStencilsEngine: TWebStencilsEngine; AFDConnection: TFDConnection);
     destructor Destroy; override;
   end;
 
 implementation
 
 uses
-	System.NetEncoding,
-	System.JSON,
+  System.NetEncoding,
+  System.JSON,
   System.IOUtils;
 
 { TTasksController }
@@ -54,12 +54,12 @@ constructor TTasksController.Create(AWebStencilsEngine: TWebStencilsEngine; AFDC
 begin
   inherited Create;
   try
-		FWebStencilsEngine := AWebStencilsEngine;
-		FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
-		FWebStencilsProcessor.Engine := FWebStencilsEngine;
-		FTasks := TTasks.Create(AFDConnection);
-		FWebStencilsEngine.AddVar('Tasks', FTasks);
-	except
+    FWebStencilsEngine := AWebStencilsEngine;
+    FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
+    FWebStencilsProcessor.Engine := FWebStencilsEngine;
+    FTasks := TTasks.Create(AFDConnection);
+    FWebStencilsEngine.AddVar('Tasks', FTasks);
+  except
     on E: Exception do
       WriteLn('TTasksController.Create: ' + E.Message);
   end;
@@ -74,47 +74,47 @@ end;
 
 procedure TTasksController.CreateTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
 var
-	lTaskDescription: string;
-	lJSON: TJSONObject;
+  lTaskDescription: string;
+  lJSON: TJSONObject;
 begin
-	if not(ARequest.Body.TryGetObject(lJSON) and lJSON.TryGetValue<string>('task', lTaskDescription)) then
-		AResponse.RaiseBadRequest('Bad request', 'Missing data');
-	lTaskDescription := TNetEncoding.HTML.Encode(lTaskDescription);
-	FTasks.AddTask(lTaskDescription);
-	AResponse.Body.SetString(RenderTemplate('card'));
+  if not(ARequest.Body.TryGetObject(lJSON) and lJSON.TryGetValue<string>('task', lTaskDescription)) then
+    AResponse.RaiseBadRequest('Bad request', 'Missing data');
+  lTaskDescription := TNetEncoding.HTML.Encode(lTaskDescription);
+  FTasks.AddTask(lTaskDescription);
+  AResponse.Body.SetString(RenderTemplate('card'));
 end;
 
 procedure TTasksController.DeleteTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
 begin
-	var lId := ARequest.Params.Values['id'];
-	FTasks.DeleteTask(lId.ToInteger);
-	AResponse.Body.SetString(RenderTemplate('card'));
+  var lId := ARequest.Params.Values['id'];
+  FTasks.DeleteTask(lId.ToInteger);
+  AResponse.Body.SetString(RenderTemplate('card'));
 end;
 
 procedure TTasksController.EditTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
 var
-	lTaskDescription: string;
-	lJSON: TJSONObject;
+  lTaskDescription: string;
+  lJSON: TJSONObject;
 begin
-	if not(ARequest.Body.TryGetObject(lJSON) and lJSON.TryGetValue<string>('task', lTaskDescription)) then
-		AResponse.RaiseBadRequest('Bad request', 'Missing data');
-	var lId := ARequest.Params.Values['id'];
-	FTasks.EditTask(lId.ToInteger, lTaskDescription);
-	AResponse.Body.SetString(RenderTemplate('card'));
+  if not(ARequest.Body.TryGetObject(lJSON) and lJSON.TryGetValue<string>('task', lTaskDescription)) then
+    AResponse.RaiseBadRequest('Bad request', 'Missing data');
+  var lId := ARequest.Params.Values['id'];
+  FTasks.EditTask(lId.ToInteger, lTaskDescription);
+  AResponse.Body.SetString(RenderTemplate('card'));
 end;
 
 procedure TTasksController.GetEditTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
 begin
-	var lId := ARequest.Params.Values['id'];
-	var lTask := FTasks.FindTaskById(lId.ToInteger);
-	AResponse.Body.SetString(RenderTemplate('itemEdit', lTask));
+  var lId := ARequest.Params.Values['id'];
+  var lTask := FTasks.FindTaskById(lId.ToInteger);
+  AResponse.Body.SetString(RenderTemplate('itemEdit', lTask));
 end;
 
 procedure TTasksController.TogglecompletedTask(ARequest: TEndpointRequest; AResponse: TEndpointResponse);
 begin
-	var lId := ARequest.Params.Values['id'];
-	FTasks.TogglecompletedTask(lId.ToInteger);
-	AResponse.Body.SetString(RenderTemplate('card'));
+  var lId := ARequest.Params.Values['id'];
+  FTasks.TogglecompletedTask(lId.ToInteger);
+  AResponse.Body.SetString(RenderTemplate('card'));
 end;
 
 end.
