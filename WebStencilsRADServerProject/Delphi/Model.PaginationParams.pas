@@ -49,7 +49,7 @@ begin
 	FPageNumber := DEFAULT_PAGE_NUMBER;
 
 	// Try to get PageSize parameter from RAD Server request params
-	if ARequest.Params.TryGetValue('size', LPageSizeStr) and (LPageSizeStr <> '') then
+	if ARequest.Params.TryGetValue('pageSize', LPageSizeStr) and (LPageSizeStr <> '') then
 	begin
 		FPageSize := StrToIntDef(LPageSizeStr, DEFAULT_PAGE_SIZE);
 		// Validate PageSize

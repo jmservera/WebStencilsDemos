@@ -6,8 +6,11 @@
 #include <System.IOUtils.hpp>
 #include <System.DateUtils.hpp>
 #include <System.SysUtils.hpp>
+#include <System.JSON.hpp>
 #include "CodeExamplesU.h"
 #include "ControllerTasks.h"
+#include "ControllerCustomers.h"
+#include "ModelPaginationParams.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma classgroup "System.Classes.TPersistent"
@@ -42,9 +45,9 @@ __fastcall TWebstencilsResource1::TWebstencilsResource1(TComponent* Owner)
 	WebStencilsProcessor->PathTemplate = TPath::Combine(LProjectPath, "html");
 	WebStencilsEngine1->RootDirectory = TPath::Combine(LProjectPath, "html");
 	WebStencilsEngine1->AddVar("customers", customers, False);
-//    customers->Open();
 	FCodeExamples = new TCodeExamples(WebStencilsEngine1);
 	FTasksController = new TTasksController(WebStencilsEngine1, FDConnection);
+	FCustomersController = new TCustomersController(WebStencilsEngine1, customers);
 	FEnvironmentSettings = new TEnvironmentSettings();
 	WebStencilsEngine1->AddVar("env", FEnvironmentSettings);
 	WebStencilsEngine1->OnValue = WebStencilsEngine1Value;
@@ -53,21 +56,10 @@ __fastcall TWebstencilsResource1::TWebstencilsResource1(TComponent* Owner)
 __fastcall TWebstencilsResource1::~TWebstencilsResource1()
 {
 /*
-	if (FCodeExamples)
-	{
-		delete FCodeExamples;
-		FCodeExamples = nullptr;
-	}
-	if (FTasksController)
-	{
-		delete FTasksController;
-		FTasksController = nullptr;
-	}
-	if (FEnvironmentSettings)
-	{
-		delete FEnvironmentSettings;
-		FEnvironmentSettings = nullptr;
-	}
+	delete FCustomersController;
+	delete FTasksController;
+	delete FCodeExamples;
+	delete FEnvironmentSettings;
 */
 }
 
@@ -125,6 +117,30 @@ void __fastcall TWebstencilsResource1::PutTask(TEndpointContext* AContext, TEndp
 	FTasksController->EditTask(ARequest, AResponse);
 }
 
+void __fastcall TWebstencilsResource1::GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+{
+	if (FCustomersController)
+	{
+		FCustomersController->GetCustomers(ARequest, AResponse);
+	}
+	else
+	{
+//		AResponse->RaiseInternalServerError(500, "Customers controller not initialized.", "Internal Server Error");
+	}
+}
+
+void __fastcall TWebstencilsResource1::GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+{
+	if (FCustomersController)
+	{
+		FCustomersController->GetAllCustomers(ARequest, AResponse);
+	}
+	else
+	{
+//		AResponse->RaiseInternalServerError(500, "Customers controller not initialized.", "Internal Server Error");
+	}
+}
+
 static void Register()
 {
     std::unique_ptr<TEMSResourceAttributes> attributes(new TEMSResourceAttributes());
@@ -141,6 +157,9 @@ static void Register()
 	attributes->ResourceSuffix["GetTasksEdit"] = "/tasks/edit";
 	attributes->ResourceSuffix["PutTaskToggleCompleted"] = "/tasks/toggleCompleted";
 	attributes->ResourceSuffix["PutTask"] = "/tasks";
+
+	attributes->ResourceSuffix["GetPaginatedCustomers"] = "/pagination";
+	attributes->ResourceSuffix["GetAllCustomersEndpoint"] = "/bigtable";
 
     RegisterResource(__typeinfo(TWebstencilsResource1), attributes.release());
 }

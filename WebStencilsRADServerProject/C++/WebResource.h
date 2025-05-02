@@ -37,6 +37,8 @@
 // Forward declarations
 class TCodeExamples;
 class TTasksController;
+class TCustomersController;
+class TEnvironmentSettings;
 
 #pragma explicit_rtti methods (public)
 //---------------------------------------------------------------------------
@@ -82,19 +84,22 @@ __published:
 private:
 	TCodeExamples* FCodeExamples;
 	TTasksController* FTasksController;
+	TCustomersController* FCustomersController;
 	TEnvironmentSettings* FEnvironmentSettings;
 	void __fastcall WebStencilsEngine1Value(TObject* Sender, const String AObjectName,
 			const String APropName, String &AReplaceText, bool &AHandled);
 
 public:
 	__fastcall TWebstencilsResource1(TComponent* Owner);
-	__fastcall ~TWebstencilsResource1();
-	void Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+	virtual __fastcall ~TWebstencilsResource1();
+	void __fastcall Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 	void __fastcall DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 	void __fastcall PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 	void __fastcall GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 	void __fastcall PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 	void __fastcall PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+	void __fastcall GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+	void __fastcall GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 };
 
 //---------------------------------------------------------------------------

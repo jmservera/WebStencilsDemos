@@ -166,6 +166,10 @@
             <DependentOn>CodeExamplesU.h</DependentOn>
             <BuildOrder>13</BuildOrder>
         </CppCompile>
+        <CppCompile Include="ControllerCustomers.cpp">
+            <DependentOn>ControllerCustomers.h</DependentOn>
+            <BuildOrder>19</BuildOrder>
+        </CppCompile>
         <CppCompile Include="ControllerTasks.cpp">
             <DependentOn>ControllerTasks.h</DependentOn>
             <BuildOrder>14</BuildOrder>
@@ -179,6 +183,10 @@
         <PackageImport Include="emsserverresource.bpi">
             <BuildOrder>4</BuildOrder>
         </PackageImport>
+        <CppCompile Include="FDQueryHelpers.cpp">
+            <DependentOn>FDQueryHelpers.h</DependentOn>
+            <BuildOrder>19</BuildOrder>
+        </CppCompile>
         <PackageImport Include="FireDAC.bpi">
             <BuildOrder>7</BuildOrder>
         </PackageImport>
@@ -197,6 +205,10 @@
         <PackageImport Include="inetstn.bpi">
             <BuildOrder>12</BuildOrder>
         </PackageImport>
+        <CppCompile Include="ModelPaginationParams.cpp">
+            <DependentOn>ModelPaginationParams.h</DependentOn>
+            <BuildOrder>20</BuildOrder>
+        </CppCompile>
         <CppCompile Include="ModelTasks.cpp">
             <DependentOn>ModelTasks.h</DependentOn>
             <BuildOrder>15</BuildOrder>

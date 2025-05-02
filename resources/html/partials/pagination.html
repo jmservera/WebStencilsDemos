@@ -1,7 +1,7 @@
 <div class="row align-items-center mt-3">
     <!-- Page size selector -->
     <div class="col-auto">
-        <select class="form-select" onchange="window.location.href = '@env.Resource/@pagination.Uri?page=@pagination.PageNumber&size=' + this.value">
+        <select class="form-select" onchange="window.location.href = '@env.Resource/@pagination.Uri?page=@pagination.PageNumber&pageSize=' + this.value">
             <option value="5" @if (pagination.PageSize = 5) {selected}>5 items per page</option>
             <option value="10" @if (pagination.PageSize = 10) {selected}>10 items per page</option>
             <option value="20" @if (pagination.PageSize = 20) {selected}>20 items per page</option>
@@ -21,14 +21,14 @@
             <ul class="pagination mb-0">
                 <!-- Previous button -->
                 <li class="page-item @if (pagination.PageNumber = 1) {disabled}">
-                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber - 1)&size=@pagination.PageSize" aria-label="Previous">
+                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber - 1)&pageSize=@pagination.PageSize" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
 
                 <!-- First page -->
                 <li class="page-item @if (pagination.PageNumber = 1) {active}">
-                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=1&size=@pagination.PageSize">1</a>
+                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=1&pageSize=@pagination.PageSize">1</a>
                 </li>
 
                 <!-- Ellipsis if needed -->
@@ -39,21 +39,21 @@
                 <!-- Previous page if not first -->
                 @if (pagination.PageNumber > 2) {
                 <li class="page-item">
-                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber - 1)&size=@pagination.PageSize">@(pagination.PageNumber - 1)</a>
+                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber - 1)&pageSize=@pagination.PageSize">@(pagination.PageNumber - 1)</a>
                 </li>
                 }
 
                 <!-- Current page if not first or last -->
 				@if ((pagination.PageNumber > 1) and (pagination.PageNumber < pagination.TotalPages)) {
 				<li class="page-item active">
-					<a class="page-link" href="@env.Resource/@pagination.Uri?page=@pagination.PageNumber&size=@pagination.PageSize">@pagination.PageNumber</a>
+					<a class="page-link" href="@env.Resource/@pagination.Uri?page=@pagination.PageNumber&pageSize=@pagination.PageSize">@pagination.PageNumber</a>
 				</li>
 				}
 
                 <!-- Next page if not last -->
                 @if (pagination.PageNumber < pagination.TotalPages) {
                 <li class="page-item">
-                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber + 1)&size=@pagination.PageSize">@(pagination.PageNumber + 1)</a>
+                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber + 1)&pageSize=@pagination.PageSize">@(pagination.PageNumber + 1)</a>
                 </li>
                 }
 
@@ -65,13 +65,13 @@
                 <!-- Last page if not first -->
                 @if (pagination.TotalPages > 1) {
                 <li class="page-item @if (pagination.PageNumber = pagination.TotalPages) {active}">
-                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@pagination.TotalPages&size=@pagination.PageSize">@pagination.TotalPages</a>
+                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@pagination.TotalPages&pageSize=@pagination.PageSize">@pagination.TotalPages</a>
                 </li>
                 }
 
                 <!-- Next button -->
                 <li class="page-item @if (pagination.PageNumber = pagination.TotalPages) {disabled}">
-                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber + 1)&size=@pagination.PageSize" aria-label="Next">
+                    <a class="page-link" href="@env.Resource/@pagination.Uri?page=@(pagination.PageNumber + 1)&pageSize=@pagination.PageSize" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

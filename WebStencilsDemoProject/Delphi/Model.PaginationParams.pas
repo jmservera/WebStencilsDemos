@@ -46,7 +46,7 @@ begin
 	FPageNumber := DEFAULT_PAGE_NUMBER;
 
 	// Try to get PageSize parameter
-	PageSizeStr := Request.QueryFields.Values['size'];
+	PageSizeStr := Request.QueryFields.Values['pageSize'];
 	if PageSizeStr <> '' then
 	begin
 		FPageSize := StrToIntDef(PageSizeStr, DEFAULT_PAGE_SIZE);

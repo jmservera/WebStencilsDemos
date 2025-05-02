@@ -24,7 +24,7 @@ void TPaginationParams::ParsePaginationParams(TWebRequest* Request)
 	FPageNumber = DEFAULT_PAGE_NUMBER;
 
 	// Try to get PageSize parameter
-	PageSizeStr = Request->QueryFields->Values["size"];
+	PageSizeStr = Request->QueryFields->Values["pageSize"];
 	if (!PageSizeStr.IsEmpty())
 	{
 		FPageSize = StrToIntDef(PageSizeStr, DEFAULT_PAGE_SIZE);
