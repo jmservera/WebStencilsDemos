@@ -87,52 +87,52 @@ void TCodeExamples::InitValues() {
         "@* This is a comment and will not appear in the output *@\n"
         "<p>This will appear in the output</p>");
     Add("codeIfAndElse",
-		"@if user.isLoggedIn {\n"
+        "@if user.isLoggedIn {\n"
         "    <p>Welcome, @user.name!</p>\n"
         "}\n"
-		"@else {\n"
+        "@else {\n"
         "    <p>Please log in to continue.</p>\n"
-		"}");
+        "}");
     Add("codeIfNot",
-		"@if not cart.isEmpty {\n"
+        "@if not cart.isEmpty {\n"
         "  <p>You have @cart.itemCount items in your cart.</p>\n"
         "}\n"
         "@else {\n"
         "  <p>Your cart is empty.</p>\n"
-		"}");
+        "}");
     Add("codeForeach",
-		"<ul>\n"
+        "<ul>\n"
         "@ForEach (var product in productList) {\n"
         "    <li>@product.name - @product.price</li>\n"
-		"}\n"
-		"</ul>");
+        "}\n"
+        "</ul>");
     Add("codeQuery", "<p>You searched for: @query.searchTerm</p>");
     Add("codePage", "<p>Current page is: @page.pagename</p>");
     Add("codeDataObject", "WebStencilsProcessor1->AddVar(\"user\", UserObject);");
     Add("codeDataMethod",
-		"WebStencilsProcessor1.AddVar('products',\n"
-		"  function: TObject\n"
-		"  begin\n"
-		"    Result := GetProductList;\n"
-		"  end);");
-	Add("codeDataAttribute",
-		"type\n"
-		"TMyDataModule = class(TDataModule)\n"
-		"  [WebStencilsVar('customers', false)]\n"
-		"  FDMemTable1: TFDMemTable;\n"
-		"  [WebStencilsVar('users')]\n"
-		"  FUsers: TUsers;\n"
-		"end;\n"
-		"\n"
-		"WebStencilsProcessor1.AddModule(DataModule1);");
+        "WebStencilsProcessor1.AddVar('products',\n"
+        "  function: TObject\n"
+        "  begin\n"
+        "    Result := GetProductList;\n"
+        "  end);");
+    Add("codeDataAttribute",
+        "type\n"
+        "TMyDataModule = class(TDataModule)\n"
+        "  [WebStencilsVar('customers', false)]\n"
+        "  FDMemTable1: TFDMemTable;\n"
+        "  [WebStencilsVar('users')]\n"
+        "  FUsers: TUsers;\n"
+        "end;\n"
+        "\n"
+        "WebStencilsProcessor1.AddModule(DataModule1);");
 
-	Add("codeLayoutPage",
-		"@LayoutPage BaseTemplate\n"
-		"<h1>Welcome to My Page</h1>\n"
-		"<p>This is the content of my page.</p>");
+    Add("codeLayoutPage",
+        "@LayoutPage BaseTemplate\n"
+        "<h1>Welcome to My Page</h1>\n"
+        "<p>This is the content of my page.</p>");
 
     Add("codeRenderBody",
-		"<!DOCTYPE html>\n"
+        "<!DOCTYPE html>\n"
         "<html>\n"
         "<head>\n"
         "    <title>My Website</title>\n"
@@ -146,31 +146,31 @@ void TCodeExamples::InitValues() {
         "    </main>\n"
         "    <footer>\n"
         "        <!-- Common footer content -->\n"
-		"    </footer>\n"
-		"</body>\n"
-		"</html>");
+        "    </footer>\n"
+        "</body>\n"
+        "</html>");
 
     Add("codeImport",
-		"@Import Sidebar.html\n"
+        "@Import Sidebar.html\n"
         "@* Same behaviour as the previous one *@\n"
         "@Import Sidebar\n"
-		"@* Use nested templates for better organization *@\n"
-		"@Import folder/Sidebar");
+        "@* Use nested templates for better organization *@\n"
+        "@Import folder/Sidebar");
 
     Add("codeHeaderBodyFooter",
-		"@Import Header.html\n"
+        "@Import Header.html\n"
         "<main>\n"
         "    <!-- Page-specific content here -->\n"
-		"</main>\n"
-		"@Import Footer.html");
+        "</main>\n"
+        "@Import Footer.html");
 
     Add("codeReusableComponents",
-		"<div class=\"product-list\">\n"
+        "<div class=\"product-list\">\n"
         "    @Import ProductList { @list = @ProductList }\n"
         "</div>\n"
         "<div class=\"tasks\">\n"
         "  @ForEach (var Task in Tasks.AllTasks) {\n"
-		"        @Import partials/tasks/item { @Task }\n"
-		"    }\n"
-		"</div>");
+        "        @Import partials/tasks/item { @Task }\n"
+        "    }\n"
+        "</div>");
 }

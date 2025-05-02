@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 #ifndef MainWebModuleH
 #define MainWebModuleH
 //---------------------------------------------------------------------------
@@ -56,52 +56,52 @@
 class TEnvironmentSettings : public System::Classes::TPersistent
 {
 private:
-	System::UnicodeString FAppVersion;
-	System::UnicodeString FAppName;
-	System::UnicodeString FAppEdition;
-	System::UnicodeString FCompanyName;
-	System::UnicodeString FResource;
-	bool FDebugMode;
-	bool FIsRadServer;
+    System::UnicodeString FAppVersion;
+    System::UnicodeString FAppName;
+    System::UnicodeString FAppEdition;
+    System::UnicodeString FCompanyName;
+    System::UnicodeString FResource;
+    bool FDebugMode;
+    bool FIsRadServer;
 
 public:
-	__fastcall TEnvironmentSettings();
+    __fastcall TEnvironmentSettings();
 
 __published:
-	__property System::UnicodeString AppVersion = {read=FAppVersion};
-	__property System::UnicodeString AppName = {read=FAppName};
-	__property System::UnicodeString AppEdition = {read=FAppEdition};
-	__property System::UnicodeString CompanyName = {read=FCompanyName};
-	__property System::UnicodeString Resource = {read=FResource};
-	__property bool DebugMode = {read=FDebugMode};
-	__property bool IsRadServer = {read=FIsRadServer};
+    __property System::UnicodeString AppVersion = {read=FAppVersion};
+    __property System::UnicodeString AppName = {read=FAppName};
+    __property System::UnicodeString AppEdition = {read=FAppEdition};
+    __property System::UnicodeString CompanyName = {read=FCompanyName};
+    __property System::UnicodeString Resource = {read=FResource};
+    __property bool DebugMode = {read=FDebugMode};
+    __property bool IsRadServer = {read=FIsRadServer};
 };
 
 //---------------------------------------------------------------------------
 class TMainWebModule : public TWebModule
 {
-__published:	// IDE-managed Components
-	TWebStencilsEngine *WebStencilsEngine;
-	TWebFileDispatcher *WebFileDispatcher;
-	TFDQuery *Customers;
-	TFDConnection *Connection;
+__published:    // IDE-managed Components
+    TWebStencilsEngine *WebStencilsEngine;
+    TWebFileDispatcher *WebFileDispatcher;
+    TFDQuery *Customers;
+    TFDConnection *Connection;
 
-private:	// User declarations
-	std::unique_ptr<TTasksController> FTasksController;
-	std::unique_ptr<TCustomersController> FCustomersController;
-	std::unique_ptr<TCodeExamples> FCodeExamples;
-	std::unique_ptr<TEnvironmentSettings> FEnvironmentSettings; // Changed from TDictionary unique_ptr
-	String FResourcesPath;
+private:    // User declarations
+    std::unique_ptr<TTasksController> FTasksController;
+    std::unique_ptr<TCustomersController> FCustomersController;
+    std::unique_ptr<TCodeExamples> FCodeExamples;
+    std::unique_ptr<TEnvironmentSettings> FEnvironmentSettings; // Changed from TDictionary unique_ptr
+    String FResourcesPath;
 
-	void DefineRoutes();
-	void InitRequiredData();
-	void InitControllers();
-	void __fastcall WebStencilsEngineValue(TObject* Sender, const String AObjectName,
-			const String APropName, String &AReplaceText, bool &AHandled);
+    void DefineRoutes();
+    void InitRequiredData();
+    void InitControllers();
+    void __fastcall WebStencilsEngineValue(TObject* Sender, const String AObjectName,
+            const String APropName, String &AReplaceText, bool &AHandled);
 
-public:		// User declarations
-	__fastcall TMainWebModule(TComponent* Owner);
-	__fastcall virtual ~TMainWebModule();
+public:        // User declarations
+    __fastcall TMainWebModule(TComponent* Owner);
+    __fastcall virtual ~TMainWebModule();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainWebModule *MainWebModule;

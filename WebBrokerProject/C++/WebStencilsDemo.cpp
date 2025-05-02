@@ -31,121 +31,121 @@ extern PACKAGE TComponentClass WebModuleClass;
 //---------------------------------------------------------------------------
 void startServer(std::unique_ptr<TIdHTTPWebBrokerBridge>const& server)
 {
-	if (!server->Active) {
-		try {
-			printf(sStartingServer, server->DefaultPort);
-			server->Bindings->Clear();
-			server->Active = true;
-		}
-		catch (Exception &exception) {
-			printf(sPortInUse, server->DefaultPort);
-		}
-	}
-	else {
-		printf("%s", sServerRunning);
-	}
-	printf("%s", cArrow);
+    if (!server->Active) {
+        try {
+            printf(sStartingServer, server->DefaultPort);
+            server->Bindings->Clear();
+            server->Active = true;
+        }
+        catch (Exception &exception) {
+            printf(sPortInUse, server->DefaultPort);
+        }
+    }
+    else {
+        printf("%s", sServerRunning);
+    }
+    printf("%s", cArrow);
 }
 
 void setPort(std::unique_ptr<TIdHTTPWebBrokerBridge>const& server, int port)
 {
-	if (!server->Active) {
-		server->DefaultPort = port;
-		printf(sPortSet, port);
-	}
-	else {
-		printf("%s", sServerRunning);
-	}
-	printf("%s", cArrow);
+    if (!server->Active) {
+        server->DefaultPort = port;
+        printf(sPortSet, port);
+    }
+    else {
+        printf("%s", sServerRunning);
+    }
+    printf("%s", cArrow);
 }
 
 void writeStatus(std::unique_ptr<TIdHTTPWebBrokerBridge>const& server)
 {
-	printf("%s%s", sIndyVersion, AnsiString(server->SessionList->Version).c_str());
-	printf("%s%s", sActive, server->Active ? "true" : "false");
-	printf("%s%d", sPort, server->DefaultPort);
-	printf("%s%s", sSessionID, AnsiString(server->SessionIDCookieName).c_str());
-	printf("%s", cArrow);
+    printf("%s%s", sIndyVersion, AnsiString(server->SessionList->Version).c_str());
+    printf("%s%s", sActive, server->Active ? "true" : "false");
+    printf("%s%d", sPort, server->DefaultPort);
+    printf("%s%s", sSessionID, AnsiString(server->SessionIDCookieName).c_str());
+    printf("%s", cArrow);
 }
 
 void stopServer(std::unique_ptr<TIdHTTPWebBrokerBridge>const& server)
 {
-	if (server->Active) {
-		printf("%s", sStoppingServer);
-		server->Active = false;
-		server->Bindings->Clear();
-		printf("%s", sServerStopped);
-	}
-	else {
-		printf("%s", sServerNotRunning);
-	}
-	printf("%s", cArrow);
+    if (server->Active) {
+        printf("%s", sStoppingServer);
+        server->Active = false;
+        server->Bindings->Clear();
+        printf("%s", sServerStopped);
+    }
+    else {
+        printf("%s", sServerNotRunning);
+    }
+    printf("%s", cArrow);
 }
 
 void writeCommands()
 {
-	printf("%s", sCommands);
-	printf("%s", cArrow);
+    printf("%s", sCommands);
+    printf("%s", cArrow);
 }
 
 void runServer(int port)
 {
-	String sResponse;
-	int iPort = 0;
-	char buffer[256];
+    String sResponse;
+    int iPort = 0;
+    char buffer[256];
 
-	// Show welcome message and ASCII art
-	printf("%s", sWelcomeText);
+    // Show welcome message and ASCII art
+    printf("%s", sWelcomeText);
 
-	std::unique_ptr<TIdHTTPWebBrokerBridge> server(new TIdHTTPWebBrokerBridge(NULL));
-	server->DefaultPort = port;
+    std::unique_ptr<TIdHTTPWebBrokerBridge> server(new TIdHTTPWebBrokerBridge(NULL));
+    server->DefaultPort = port;
 
-	// Auto-start the server
-	startServer(server);
-	printf(sServerReady, port);
+    // Auto-start the server
+    startServer(server);
+    printf(sServerReady, port);
 
-	writeCommands();
+    writeCommands();
 
-	while (true)
-	{
-		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-			// Remove newline
-			buffer[strcspn(buffer, "\n")] = 0;
-			// Convert to lowercase for case-insensitive comparison
-			String input = String(buffer).LowerCase();
-			AnsiString command = input.c_str();
+    while (true)
+    {
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+            // Remove newline
+            buffer[strcspn(buffer, "\n")] = 0;
+            // Convert to lowercase for case-insensitive comparison
+            String input = String(buffer).LowerCase();
+            AnsiString command = input.c_str();
 
-			if (strncmp(command.c_str(), cCommandSetPort, strlen(cCommandSetPort)) == 0) {
-				// Extract port number from the remaining part of the command
-				const char* portStr = command.c_str() + strlen(cCommandSetPort);
-				while (*portStr == ' ') portStr++; // Skip spaces
-				iPort = atoi(portStr);
+            if (strncmp(command.c_str(), cCommandSetPort, strlen(cCommandSetPort)) == 0) {
+                // Extract port number from the remaining part of the command
+                const char* portStr = command.c_str() + strlen(cCommandSetPort);
+                while (*portStr == ' ') portStr++; // Skip spaces
+                iPort = atoi(portStr);
 
-				if (iPort > 0)
-					setPort(server, iPort);
-				else {
-					printf("%s", sInvalidPort);
-					printf("%s", cArrow);
-				}
-			}
-			else if (strcmp(command.c_str(), cCommandStart) == 0)
-				startServer(server);
-			else if (strcmp(command.c_str(), cCommandStop) == 0)
-				stopServer(server);
-			else if (strcmp(command.c_str(), cCommandStatus) == 0)
-				writeStatus(server);
-			else if (strcmp(command.c_str(), cCommandHelp) == 0)
-				writeCommands();
-			else if (strcmp(command.c_str(), cCommandExit) == 0) {
-				stopServer(server);
-				break;
-			}
-			else {
-				printf("%s", sInvalidCommand);
-				printf("%s", cArrow);
-			}
-		}
-	}
+                if (iPort > 0)
+                    setPort(server, iPort);
+                else {
+                    printf("%s", sInvalidPort);
+                    printf("%s", cArrow);
+                }
+            }
+            else if (strcmp(command.c_str(), cCommandStart) == 0)
+                startServer(server);
+            else if (strcmp(command.c_str(), cCommandStop) == 0)
+                stopServer(server);
+            else if (strcmp(command.c_str(), cCommandStatus) == 0)
+                writeStatus(server);
+            else if (strcmp(command.c_str(), cCommandHelp) == 0)
+                writeCommands();
+            else if (strcmp(command.c_str(), cCommandExit) == 0) {
+                stopServer(server);
+                break;
+            }
+            else {
+                printf("%s", sInvalidCommand);
+                printf("%s", cArrow);
+            }
+        }
+    }
 }
 
 //---------------------------------------------------------------------------

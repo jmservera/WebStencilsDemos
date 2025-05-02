@@ -35,7 +35,7 @@ TTasksController::~TTasksController() {
 }
 
 String TTasksController::RenderTemplate(const String& ATemplate, TTaskItem* ATask) {
-	String templatePath = TPath::Combine(FWebStencilsEngine->RootDirectory, "partials/tasks/" + ATemplate + ".html");
+    String templatePath = TPath::Combine(FWebStencilsEngine->RootDirectory, "partials/tasks/" + ATemplate + ".html");
     
     if (!FileExists(templatePath)) {
         throw Exception("Template file not found: " + templatePath);
@@ -66,7 +66,7 @@ void TTasksController::CreateTask(TObject* Sender, TWebRequest* Request, TWebRes
         }
         task = TNetEncoding::HTML->Encode(task);
         TTaskItem* newTask = FTasks->AddTask(task);
-		Response->Content = RenderTemplate("card");
+        Response->Content = RenderTemplate("card");
         Handled = true;
     }
     catch (Exception& E) {
@@ -87,7 +87,7 @@ void TTasksController::DeleteTask(TObject* Sender, TWebRequest* Request, TWebRes
             throw Exception("Invalid task ID");
         }
         FTasks->DeleteTask(taskId);
-		Response->Content = RenderTemplate("card");
+        Response->Content = RenderTemplate("card");
         Handled = true;
     }
     catch (Exception& E) {

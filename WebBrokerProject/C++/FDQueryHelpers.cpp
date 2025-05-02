@@ -1,4 +1,4 @@
-#pragma hdrstop
+﻿#pragma hdrstop
 
 #include "FDQueryHelpers.h"
 #include <System.DateUtils.hpp>
@@ -12,7 +12,7 @@
 //-----------------------------------------------------------------------------
 namespace FDQueryHelpers {
 
-	static int FCachedRecordCount = 0;
+    static int FCachedRecordCount = 0;
     static TDateTime FLastCountTime = 0;
     const int CACHE_TIMEOUT = 5; // seconds
 
@@ -30,7 +30,7 @@ namespace FDQueryHelpers {
             throw Exception("PageSize must be greater than 0");
         }
 
-		// Store the current page number before changing page size
+        // Store the current page number before changing page size
         int LOldPageNumber = GetPageNumber(Query);
 
         // Set the new page size
@@ -76,7 +76,7 @@ namespace FDQueryHelpers {
 
     int GetTotalRecords(TFDQuery* Query)
     {
-		// Check count cache first
+        // Check count cache first
         if ((FCachedRecordCount > 0) &&
             (SecondsBetween(Now(), FLastCountTime) < CACHE_TIMEOUT))
         {
@@ -93,7 +93,7 @@ namespace FDQueryHelpers {
             LCloneQuery->Params->AssignValues(Query->Params);
         }
 
-		LCloneQuery->FetchOptions->RecordCountMode = TFDRecordCountMode::cmTotal;
+        LCloneQuery->FetchOptions->RecordCountMode = TFDRecordCountMode::cmTotal;
 
         LCloneQuery->Open();
         try

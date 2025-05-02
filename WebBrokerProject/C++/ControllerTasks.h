@@ -1,4 +1,4 @@
-// TasksController.h
+﻿// TasksController.h
 #ifndef ControllerTasksH
 #define ControllerTasksH
 
@@ -27,4 +27,4 @@ public:
     void ToggleCompletedTask(TObject* Sender, TWebRequest* Request, TWebResponse* Response, bool& Handled);
 };
 
-#endif 
+#endif

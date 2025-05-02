@@ -1,4 +1,4 @@
-#ifndef ClassHelpersH
+﻿#ifndef ClassHelpersH
 #define ClassHelpersH
 
 #include <System.SysUtils.hpp>

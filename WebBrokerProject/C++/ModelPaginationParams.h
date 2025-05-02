@@ -1,4 +1,4 @@
-#ifndef ModelPaginationParamsH
+﻿#ifndef ModelPaginationParamsH
 #define ModelPaginationParamsH
 
 #include <System.Classes.hpp>
