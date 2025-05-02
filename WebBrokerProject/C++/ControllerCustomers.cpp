@@ -5,10 +5,10 @@
 #include "ControllerCustomers.h"
 #include <Web.Stencils.hpp>
 #include <System.IOUtils.hpp>
-#include <System.SysUtils.hpp> // Keep for PathDelim, if needed, or remove if not
-#include <memory> // For std::unique_ptr
-#include <iostream> // For basic logging
-#include <string> // For std::to_string
+#include <System.SysUtils.hpp>
+#include <memory>
+#include <iostream>
+#include <string>
 
 //-----------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -21,36 +21,32 @@ __fastcall TCustomersController::TCustomersController(Web::Stencils::TWebStencil
 	{
 		FWebStencilsEngine = AWebStencilsEngine;
 		// Use fully qualified name for clarity and to avoid potential ambiguity
-		FWebStencilsProcessor = new Web::Stencils::TWebStencilsProcessor(nullptr); // Create owned instance
+		FWebStencilsProcessor = new Web::Stencils::TWebStencilsProcessor(nullptr);
 		FWebStencilsProcessor->Engine = FWebStencilsEngine;
 		FCustomers = ACustomers; // Store pointer to existing query
 	}
 	catch (Exception &E)
 	{
-		// Basic error logging to standard output (consider a more robust logging mechanism)
 		std::cerr << "TCustomersController::Create: " << AnsiString(E.Message).c_str() << std::endl;
-		throw; // Re-throw the exception after logging
+		throw;
 	}
 }
 //-----------------------------------------------------------------------------
 
 __fastcall TCustomersController::~TCustomersController()
 {
-	delete FWebStencilsProcessor; // Clean up owned processor
+	delete FWebStencilsProcessor;
 }
 //-----------------------------------------------------------------------------
 
 String TCustomersController::RenderTemplate(String ATemplate, TPaginationParams* APaginationParams)
 {
-	// Ensure RootDirectory ends with a path delimiter if not empty
 	String RootDir = FWebStencilsEngine->RootDirectory;
-	// Use LastChar() and dereference it (*) for comparison
 	if (!RootDir.IsEmpty() && *RootDir.LastChar() != System::Sysutils::PathDelim)
 	{
 		RootDir += System::Sysutils::PathDelim;
 	}
 
-	// Use fully qualified name for TPath for clarity, although TPath is usually global
 	FWebStencilsProcessor->InputFileName = RootDir + "customers" + System::Sysutils::PathDelim + ATemplate + ".html";
 
 	if (APaginationParams != nullptr)
@@ -62,8 +58,6 @@ String TCustomersController::RenderTemplate(String ATemplate, TPaginationParams*
 
 	if (APaginationParams != nullptr)
 	{
-		// RemoveVar does not delete the object, it just removes it from the list.
-		// Since AddVar was called with OwnsObject=false, we don't delete APaginationParams here.
 		FWebStencilsProcessor->DataVars->Remove("customersPagination");
 	}
 	return Result;
@@ -72,7 +66,6 @@ String TCustomersController::RenderTemplate(String ATemplate, TPaginationParams*
 
 void __fastcall TCustomersController::GetCustomers(TObject* Sender, TWebRequest* Request, TWebResponse* Response, bool &Handled)
 {
-	// Use std::unique_ptr for automatic memory management of TPaginationParams
 	std::unique_ptr<TPaginationParams> LPaginationParams(new TPaginationParams(Request, "pagination"));
 	try
 	{

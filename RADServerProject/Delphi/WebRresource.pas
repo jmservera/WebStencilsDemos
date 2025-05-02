@@ -116,8 +116,10 @@ end;
 
 procedure TTasksResource1.DataModuleCreate(Sender: TObject);
 const
-	// Replace this path with wherever you copy the project in your computer
-	LProjectPath: string = 'C:\Users\antonio\Documents\GitHub\WebStencilsDemos\resources';
+	//////////////////////
+	// Replace the constant LProjectPath with the absolute path to the resources folder of the reporitory
+	//////////////////////
+	LProjectPath: string = 'C:\replace\with\your\absolute\path\to\the\resources\folder';
 begin
 
 	FDConnection.Params.Database := TPath.Combine(LProjectPath, 'data\tasks.ib');

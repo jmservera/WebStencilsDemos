@@ -35,7 +35,10 @@ TEnvironmentSettings::TEnvironmentSettings()
 __fastcall TWebstencilsResource1::TWebstencilsResource1(TComponent* Owner)
 	: TDataModule(Owner)
 {
-	const String LProjectPath = "C:\\Users\\antonio\\Documents\\GitHub\\WebStencilsDemos\\resources";
+	//////////////////////
+	// Replace the constant LProjectPath with the absolute path to the resources folder of the reporitory
+	//////////////////////
+	const String LProjectPath = "C:\\replace\\with\\your\\absolute\\path\\to\\the\\resources\\folder";
 
 	FDConnection->Params->Database = TPath::Combine(LProjectPath, "data\\tasks.ib");
 	html->PathTemplate = TPath::Combine(LProjectPath, "html\\{filename}");
