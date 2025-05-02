@@ -32,23 +32,23 @@ int __fastcall TTasks::GetCompletedCount() {
 }
 
 TList__1<TObject*>* __fastcall TTasks::GetAllTasks() {
-	TList__1<TObject*>* LItems = new TList__1<TObject*>();
+    TList__1<TObject*>* LItems = new TList__1<TObject*>();
 
-	if (FDConnection) {
+    if (FDConnection) {
         std::unique_ptr<TFDQuery> query(new TFDQuery(nullptr));
         try {
             query->Connection = FDConnection;
             query->SQL->Text = "SELECT * FROM tasks ORDER BY id";
             query->Open();
 
-			while (!query->Eof) {
-				TTaskItem* newItem = new TTaskItem(query->FieldByName("id")->AsInteger,
-												   query->FieldByName("description")->AsString,
-												   query->FieldByName("completed")->AsBoolean);
-				LItems->Add(newItem);
-				query->Next();
+            while (!query->Eof) {
+                TTaskItem* newItem = new TTaskItem(query->FieldByName("id")->AsInteger,
+                                                   query->FieldByName("description")->AsString,
+                                                   query->FieldByName("completed")->AsBoolean);
+                LItems->Add(newItem);
+                query->Next();
             }
-			query->Close();
+            query->Close();
         }
         catch(...) {
             delete LItems;
@@ -93,10 +93,10 @@ void TTasks::AddTask(const String& ADescription) {
         Variant maxId = FDConnection->ExecSQLScalar("SELECT MAX(id) FROM tasks");
         if (!VarIsNull(maxId)) {
             nextId = (int)maxId + 1;
-		}
+        }
 
         FDConnection->ExecSQL("INSERT INTO tasks(id, description, completed) VALUES (:id, :description, :completed)",
-							OPENARRAY(Variant, (nextId, ADescription, false)));
+                            OPENARRAY(Variant, (nextId, ADescription, false)));
     }
 }
 
@@ -112,7 +112,7 @@ void TTasks::EditTask(int AId, const String& ADescription) {
 
 void TTasks::DeleteTask(int AId) {
     if (FDConnection) {
-		FDConnection->ExecSQL("DELETE FROM tasks WHERE id = :id", OPENARRAY(Variant, (AId)));
+        FDConnection->ExecSQL("DELETE FROM tasks WHERE id = :id", OPENARRAY(Variant, (AId)));
     }
 }
 

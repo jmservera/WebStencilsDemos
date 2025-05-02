@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 #ifndef ControllerCustomersH
 #define ControllerCustomersH
 //---------------------------------------------------------------------------
@@ -15,21 +15,21 @@ class TPaginationParams; // Use the C++ class we created
 class TCustomersController : public TObject
 {
 private:
-	TFDQuery* FCustomers;
-	Web::Stencils::TWebStencilsProcessor* FWebStencilsProcessor;
-	Web::Stencils::TWebStencilsEngine* FWebStencilsEngine;
+    TFDQuery* FCustomers;
+    Web::Stencils::TWebStencilsProcessor* FWebStencilsProcessor;
+    Web::Stencils::TWebStencilsEngine* FWebStencilsEngine;
 
-	// Render Template Overloads
-	System::UnicodeString RenderTemplate(System::UnicodeString ATemplate, TPaginationParams* APaginationParams);
-	System::UnicodeString RenderTemplate(System::UnicodeString ATemplate); // For no pagination info
+    // Render Template Overloads
+    System::UnicodeString RenderTemplate(System::UnicodeString ATemplate, TPaginationParams* APaginationParams);
+    System::UnicodeString RenderTemplate(System::UnicodeString ATemplate); // For no pagination info
 
 public:
-	__fastcall TCustomersController(Web::Stencils::TWebStencilsEngine* AWebStencilsEngine, TFDQuery* ACustomers);
-	virtual __fastcall ~TCustomersController();
+    __fastcall TCustomersController(Web::Stencils::TWebStencilsEngine* AWebStencilsEngine, TFDQuery* ACustomers);
+    virtual __fastcall ~TCustomersController();
 
-	// Endpoint methods adapted for RAD Server
-	void __fastcall GetCustomers(TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall GetAllCustomers(TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    // Endpoint methods adapted for RAD Server
+    void __fastcall GetCustomers(TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall GetAllCustomers(TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 };
 //---------------------------------------------------------------------------
 #endif 

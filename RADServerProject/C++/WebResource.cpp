@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 #pragma hdrstop
 
 #include "WebResource.h"
@@ -19,150 +19,144 @@
 
 TEnvironmentSettings::TEnvironmentSettings()
 {
-	FAppVersion = "1.0.0";
-	FAppName = "WebStencils demo";
-	FAppEdition = "RAD Server C++";
-	FCompanyName = "Embarcadero Inc.";
-	FResource = "/web";
-	FIsRadServer = true;
+    FAppVersion = "1.0.0";
+    FAppName = "WebStencils demo";
+    FAppEdition = "RAD Server C++";
+    FCompanyName = "Embarcadero Inc.";
+    FResource = "/web";
+    FIsRadServer = true;
 #ifdef _DEBUG
-	FDebugMode = true;
+    FDebugMode = true;
 #else
-	FDebugMode = false;
+    FDebugMode = false;
 #endif
 }
 
 __fastcall TWebstencilsResource1::TWebstencilsResource1(TComponent* Owner)
-	: TDataModule(Owner)
+    : TDataModule(Owner)
 {
-	//////////////////////
-	// Replace the constant LProjectPath with the absolute path to the resources folder of the reporitory
-	//////////////////////
-	const String LProjectPath = "C:\\replace\\with\\your\\absolute\\path\\to\\the\\resources\\folder";
+    //////////////////////
+    // Replace the constant LProjectPath with the absolute path to the resources folder of the reporitory
+    //////////////////////
+    const String LProjectPath = "C:\\replace\\with\\your\\absolute\\path\\to\\the\\resources\\folder";
 
-	FDConnection->Params->Database = TPath::Combine(LProjectPath, "data\\tasks.ib");
-	html->PathTemplate = TPath::Combine(LProjectPath, "html\\{filename}");
-	css->PathTemplate = TPath::Combine(LProjectPath, "html\\static\\css\\{filename}");
-	js->PathTemplate = TPath::Combine(LProjectPath, "html\\static\\js\\{filename}");
-	img->PathTemplate = TPath::Combine(LProjectPath, "html\\static\\img\\{filename}");
-	WebStencilsProcessor->PathTemplate = TPath::Combine(LProjectPath, "html");
-	WebStencilsEngine1->RootDirectory = TPath::Combine(LProjectPath, "html");
-	WebStencilsEngine1->AddVar("customers", customers, False);
-	FCodeExamples = new TCodeExamples(WebStencilsEngine1);
-	FTasksController = new TTasksController(WebStencilsEngine1, FDConnection);
-	FCustomersController = new TCustomersController(WebStencilsEngine1, customers);
-	FEnvironmentSettings = new TEnvironmentSettings();
-	WebStencilsEngine1->AddVar("env", FEnvironmentSettings);
-	WebStencilsEngine1->OnValue = WebStencilsEngine1Value;
+    FDConnection->Params->Database = TPath::Combine(LProjectPath, "data\\tasks.ib");
+    html->PathTemplate = TPath::Combine(LProjectPath, "html\\{filename}");
+    css->PathTemplate = TPath::Combine(LProjectPath, "html\\static\\css\\{filename}");
+    js->PathTemplate = TPath::Combine(LProjectPath, "html\\static\\js\\{filename}");
+    img->PathTemplate = TPath::Combine(LProjectPath, "html\\static\\img\\{filename}");
+    WebStencilsProcessor->PathTemplate = TPath::Combine(LProjectPath, "html");
+    WebStencilsEngine1->RootDirectory = TPath::Combine(LProjectPath, "html");
+    WebStencilsEngine1->AddVar("customers", customers, False);
+    FCodeExamples = new TCodeExamples(WebStencilsEngine1);
+    FTasksController = new TTasksController(WebStencilsEngine1, FDConnection);
+    FCustomersController = new TCustomersController(WebStencilsEngine1, customers);
+    FEnvironmentSettings = new TEnvironmentSettings();
+    WebStencilsEngine1->AddVar("env", FEnvironmentSettings);
+    WebStencilsEngine1->OnValue = WebStencilsEngine1Value;
 }
 
 __fastcall TWebstencilsResource1::~TWebstencilsResource1()
 {
-/*
-	delete FCustomersController;
-	delete FTasksController;
-	delete FCodeExamples;
-	delete FEnvironmentSettings;
-*/
 }
 
 void __fastcall TWebstencilsResource1::WebStencilsEngine1Value(TObject* Sender, const String AObjectName,
-			const String APropName, String &AReplaceText, bool &AHandled)
+            const String APropName, String &AReplaceText, bool &AHandled)
 {
-	if (SameText(AObjectName, "system"))
-	{
-		if (SameText(APropName, "timestamp"))
-		{
-			AReplaceText = FormatDateTime("yyyy-mm-dd hh:nn:ss", Now());
-		}
-		else if (SameText(APropName, "year"))
-		{
-			AReplaceText = FormatDateTime("yyyy", Now());
-		}
-		else
-		{
-			AReplaceText = System::Sysutils::Format("SYSTEM_%s_NOT_FOUND", ARRAYOFCONST((APropName.UpperCase())));
-		}
-		AHandled = true;
-	}
+    if (SameText(AObjectName, "system"))
+    {
+        if (SameText(APropName, "timestamp"))
+        {
+            AReplaceText = FormatDateTime("yyyy-mm-dd hh:nn:ss", Now());
+        }
+        else if (SameText(APropName, "year"))
+        {
+            AReplaceText = FormatDateTime("yyyy", Now());
+        }
+        else
+        {
+            AReplaceText = System::Sysutils::Format("SYSTEM_%s_NOT_FOUND", ARRAYOFCONST((APropName.UpperCase())));
+        }
+        AHandled = true;
+    }
 }
 
 void __fastcall TWebstencilsResource1::Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	String LHTMLContent;
-	WebStencilsProcessor->InputFileName = TPath::Combine(WebStencilsProcessor->PathTemplate, "home.html");
-	LHTMLContent = WebStencilsProcessor->Content();
-	AResponse->Body->SetString(LHTMLContent);
+    String LHTMLContent;
+    WebStencilsProcessor->InputFileName = TPath::Combine(WebStencilsProcessor->PathTemplate, "home.html");
+    LHTMLContent = WebStencilsProcessor->Content();
+    AResponse->Body->SetString(LHTMLContent);
 }
 
 void __fastcall TWebstencilsResource1::DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	FTasksController->DeleteTask(ARequest, AResponse);
+    FTasksController->DeleteTask(ARequest, AResponse);
 }
 
 void __fastcall TWebstencilsResource1::PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	FTasksController->CreateTask(ARequest, AResponse);
+    FTasksController->CreateTask(ARequest, AResponse);
 }
 
 void __fastcall TWebstencilsResource1::GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	FTasksController->GetEditTask(ARequest, AResponse);
+    FTasksController->GetEditTask(ARequest, AResponse);
 }
 
 void __fastcall TWebstencilsResource1::PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	FTasksController->ToggleCompletedTask(ARequest, AResponse);
+    FTasksController->ToggleCompletedTask(ARequest, AResponse);
 }
 
 void __fastcall TWebstencilsResource1::PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	FTasksController->EditTask(ARequest, AResponse);
+    FTasksController->EditTask(ARequest, AResponse);
 }
 
 void __fastcall TWebstencilsResource1::GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	if (FCustomersController)
-	{
-		FCustomersController->GetCustomers(ARequest, AResponse);
-	}
-	else
-	{
-//		AResponse->RaiseInternalServerError(500, "Customers controller not initialized.", "Internal Server Error");
-	}
+    if (FCustomersController)
+    {
+        FCustomersController->GetCustomers(ARequest, AResponse);
+    }
+    else
+    {
+        AResponse->RaiseError(500, "Customers controller not initialized.", "Internal Server Error");
+    }
 }
 
 void __fastcall TWebstencilsResource1::GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
-	if (FCustomersController)
-	{
-		FCustomersController->GetAllCustomers(ARequest, AResponse);
-	}
-	else
-	{
-//		AResponse->RaiseInternalServerError(500, "Customers controller not initialized.", "Internal Server Error");
-	}
+    if (FCustomersController)
+    {
+        FCustomersController->GetAllCustomers(ARequest, AResponse);
+    }
+    else
+    {
+        AResponse->RaiseError(500, "Customers controller not initialized.", "Internal Server Error");
+    }
 }
 
 static void Register()
 {
     std::unique_ptr<TEMSResourceAttributes> attributes(new TEMSResourceAttributes());
-	attributes->ResourceName = "web";
+    attributes->ResourceName = "web";
 
-	attributes->ResourceSuffix["html.Get"] = "/{filename}";
-	attributes->ResourceSuffix["css.Get"] = "/static/css/{filename}";
-	attributes->ResourceSuffix["js.Get"] = "/static/js/{filename}";
-	attributes->ResourceSuffix["img.Get"] = "/static/img/{filename}";
+    attributes->ResourceSuffix["html.Get"] = "/{filename}";
+    attributes->ResourceSuffix["css.Get"] = "/static/css/{filename}";
+    attributes->ResourceSuffix["js.Get"] = "/static/js/{filename}";
+    attributes->ResourceSuffix["img.Get"] = "/static/img/{filename}";
 
-	attributes->ResourceSuffix["Get"] = "/";
-	attributes->ResourceSuffix["DeleteTask"] = "/tasks";
-	attributes->ResourceSuffix["PostTask"] = "/tasks/add";
-	attributes->ResourceSuffix["GetTasksEdit"] = "/tasks/edit";
-	attributes->ResourceSuffix["PutTaskToggleCompleted"] = "/tasks/toggleCompleted";
-	attributes->ResourceSuffix["PutTask"] = "/tasks";
+    attributes->ResourceSuffix["Get"] = "/";
+    attributes->ResourceSuffix["DeleteTask"] = "/tasks";
+    attributes->ResourceSuffix["PostTask"] = "/tasks/add";
+    attributes->ResourceSuffix["GetTasksEdit"] = "/tasks/edit";
+    attributes->ResourceSuffix["PutTaskToggleCompleted"] = "/tasks/toggleCompleted";
+    attributes->ResourceSuffix["PutTask"] = "/tasks";
 
-	attributes->ResourceSuffix["GetPaginatedCustomers"] = "/pagination";
-	attributes->ResourceSuffix["GetAllCustomersEndpoint"] = "/bigtable";
+    attributes->ResourceSuffix["GetPaginatedCustomers"] = "/pagination";
+    attributes->ResourceSuffix["GetAllCustomersEndpoint"] = "/bigtable";
 
     RegisterResource(__typeinfo(TWebstencilsResource1), attributes.release());
 }

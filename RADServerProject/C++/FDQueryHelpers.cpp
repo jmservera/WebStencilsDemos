@@ -1,18 +1,17 @@
-#pragma hdrstop
+﻿#pragma hdrstop
 
 #include "FDQueryHelpers.h"
 #include <System.DateUtils.hpp>
 #include <FireDAC.Stan.Option.hpp>
 #include <FireDAC.Stan.Param.hpp>
-#include <memory> // For std::unique_ptr
-#include <climits> // For INT_MAX
+#include <memory>
+#include <climits>
 
 //-----------------------------------------------------------------------------
 #pragma package(smart_init)
 //-----------------------------------------------------------------------------
 namespace FDQueryHelpers {
 
-    // Static variables equivalent to class vars in Delphi helper
     static int FCachedRecordCount = 0;
     static TDateTime FLastCountTime = 0;
     const int CACHE_TIMEOUT = 5; // seconds
@@ -94,7 +93,6 @@ namespace FDQueryHelpers {
             LCloneQuery->Params->AssignValues(Query->Params);
         }
 
-        // Let FireDAC optimize the count operation
         LCloneQuery->FetchOptions->RecordCountMode = TFDRecordCountMode::cmTotal;
 
         LCloneQuery->Open();
@@ -154,4 +152,4 @@ namespace FDQueryHelpers {
         Query->Open();
     }
 
-} // namespace FDQueryHelpers 
+}

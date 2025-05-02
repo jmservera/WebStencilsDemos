@@ -1,4 +1,4 @@
-// EMS Resource Modules
+﻿// EMS Resource Modules
 //---------------------------------------------------------------------------
 
 #ifndef WebResourceH
@@ -46,25 +46,25 @@ class TEnvironmentSettings;
 class TEnvironmentSettings : public TObject
 {
 private:
-	System::UnicodeString FAppVersion;
-	System::UnicodeString FAppName;
-	System::UnicodeString FAppEdition;
-	System::UnicodeString FCompanyName;
-	System::UnicodeString FResource;
-	bool FDebugMode;
-	bool FIsRadServer;
+    System::UnicodeString FAppVersion;
+    System::UnicodeString FAppName;
+    System::UnicodeString FAppEdition;
+    System::UnicodeString FCompanyName;
+    System::UnicodeString FResource;
+    bool FDebugMode;
+    bool FIsRadServer;
 
 public:
-	TEnvironmentSettings();
+    TEnvironmentSettings();
 
 __published:
-	__property System::UnicodeString AppVersion = {read=FAppVersion};
-	__property System::UnicodeString AppName = {read=FAppName};
-	__property System::UnicodeString AppEdition = {read=FAppEdition};
-	__property System::UnicodeString CompanyName = {read=FCompanyName};
-	__property System::UnicodeString Resource = {read=FResource};
-	__property bool DebugMode = {read=FDebugMode};
-	__property bool IsRadServer = {read=FIsRadServer};
+    __property System::UnicodeString AppVersion = {read=FAppVersion};
+    __property System::UnicodeString AppName = {read=FAppName};
+    __property System::UnicodeString AppEdition = {read=FAppEdition};
+    __property System::UnicodeString CompanyName = {read=FCompanyName};
+    __property System::UnicodeString Resource = {read=FResource};
+    __property bool DebugMode = {read=FDebugMode};
+    __property bool IsRadServer = {read=FIsRadServer};
 };
 
 
@@ -72,34 +72,34 @@ __published:
 class TWebstencilsResource1 : public TDataModule
 {
 __published:
-	TEMSFileResource *html;
-	TWebStencilsEngine *WebStencilsEngine1;
-	TWebStencilsProcessor *WebStencilsProcessor;
-	TFDConnection *FDConnection;
-	TFDQuery *customers;
-	TEMSFileResource *css;
-	TEMSFileResource *js;
-	TEMSFileResource *img;
+    TEMSFileResource *html;
+    TWebStencilsEngine *WebStencilsEngine1;
+    TWebStencilsProcessor *WebStencilsProcessor;
+    TFDConnection *FDConnection;
+    TFDQuery *customers;
+    TEMSFileResource *css;
+    TEMSFileResource *js;
+    TEMSFileResource *img;
 
 private:
-	TCodeExamples* FCodeExamples;
-	TTasksController* FTasksController;
-	TCustomersController* FCustomersController;
-	TEnvironmentSettings* FEnvironmentSettings;
-	void __fastcall WebStencilsEngine1Value(TObject* Sender, const String AObjectName,
-			const String APropName, String &AReplaceText, bool &AHandled);
+    TCodeExamples* FCodeExamples;
+    TTasksController* FTasksController;
+    TCustomersController* FCustomersController;
+    TEnvironmentSettings* FEnvironmentSettings;
+    void __fastcall WebStencilsEngine1Value(TObject* Sender, const String AObjectName,
+            const String APropName, String &AReplaceText, bool &AHandled);
 
 public:
-	__fastcall TWebstencilsResource1(TComponent* Owner);
-	virtual __fastcall ~TWebstencilsResource1();
-	void __fastcall Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-	void __fastcall GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    __fastcall TWebstencilsResource1(TComponent* Owner);
+    virtual __fastcall ~TWebstencilsResource1();
+    void __fastcall Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void __fastcall GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 };
 
 //---------------------------------------------------------------------------

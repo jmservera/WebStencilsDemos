@@ -1,4 +1,4 @@
-#ifndef FDQueryHelpersH
+﻿#ifndef FDQueryHelpersH
 #define FDQueryHelpersH
 
 #include <FireDAC.Comp.Client.hpp>
