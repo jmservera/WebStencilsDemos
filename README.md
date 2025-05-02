@@ -6,23 +6,26 @@ Embarcadero official WebStencils demo repository. Note that you will need RAD St
 
 ## Sample Projects included
 
-### WebStencils Showcase
+### WebBroker Project
+Demonstrates using WebStencils with WebBroker technology. Available in both Delphi and C++Builder.
+- **Data Sources:** Uses an in-memory list for the Tasks demo and an SQLite database (`resources/data/database.sqlite3`) for the Customers demos (Big Table & Pagination).
+- **Templates:** Shares HTML templates with other projects from the `resources/html` directory.
+
+[More info - Delphi](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebBrokerProject/Delphi) | [More info - C++Builder](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebBrokerProject/C++)
+
+### RAD Server Project
+Demonstrates using WebStencils within Embarcadero's RAD Server REST API backend framework. Available in both Delphi and C++Builder.
+- **Data Sources:** Uses an InterBase database (`resources/data/tasks.ib`) for both the Tasks and Customers demos.
+- **Templates:** Shares HTML templates with other projects from the `resources/html` directory.
+
+[More info - Delphi](https://github.com/Embarcadero/WebStencilsDemos/tree/main/RADServerProject/Delphi) | [More info - C++Builder](https://github.com/Embarcadero/WebStencilsDemos/tree/main/RADServerProject/C++)
+
+> **Note:** Both WebBroker and RAD Server projects render the same website but leverage different backend technologies and data storage mechanisms. This highlights the flexibility of WebStencils, which remains independent of the backend framework (WebBroker, RAD Server, etc.), programming language (Delphi, C++), and data access layer (In-memory, SQLite, InterBase via FireDAC). All projects share the same WebStencils templates stored in `resources/html`.
+
+### FMX Showcase
 This demo shows the core functionality of WebStencils in a FireMonkey (FMX) application through a highly visual interface. The default templates are stored as global constants in a dedicated unit, and the demo allows editing the templates on the memo fields to allow interactive visualization of the generated output. 
 
 [More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsShowcase)
-
-### WebStencils Demo Project
-This project demonstrates the usage of WebStencils with WebBroker. 
-
-[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsDemoProject)
-
-### WebStencils RAD Server Project
-This project demonstrates the usage of WebStencils with RAD Server. 
-
-[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsRADServerProject)
-
-> Both WebBroker and RAD Server projects offer the same website result but leveraging two different backend options. 
-
 
 ## Copyright
 This software is Copyright 2024 Embarcadero Technologies, Inc.

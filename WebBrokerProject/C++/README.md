@@ -3,62 +3,60 @@
 ![WebStencils screenshot](../../.github/images/WebBroker.png)
 
 ## 🌟 Overview
-This project demonstrates the usage of WebStencils using WebBroker in a C++ Builder environment. It includes part of the documentation built into the generated website, as well as a couple of demos, mirroring the functionality of the Delphi version.
+This project demonstrates the usage of WebStencils using WebBroker in a C++ Builder environment. It mirrors the functionality of the Delphi version, showcasing WebStencils' capabilities with C++.
 
 ## 🚦 Getting Started
 The project is designed to be run on Windows using C++ Builder.
 
-Simply open the project in the C++ Builder IDE, build it, and run it. The default behavior attempts to locate the HTML templates and database relative to the executable's path. For a production environment, you would typically adjust these paths.
+Simply open the project in the C++ Builder IDE, build it, and run it. The default behavior attempts to locate the shared HTML templates and SQLite database relative to the executable's path. For production, adjust these paths as needed.
 
 ## 📚 Examples
 ### Docs
-Most of the menus explain the general use of WebStencils as well as some suggested ideas for templating patterns.
+Most menus explain the general use of WebStencils and suggest templating patterns.
 
 ### Big Table
-This demo loads 1000 customers loaded in a FireDAC query. Customers data is stored in a `sqlite` database located in `resources/data`.
+Loads 1000 customer records from the shared SQLite database (`resources/data/database.sqlite3`) using FireDAC and displays them in a table.
 
 ### Pagination
-Same `customers` table, but this time using server-side pagination.
+Demonstrates server-side pagination using the same customer data from the SQLite database.
 
 ### To-Do app - HTMX Integration
-The project includes an example of using HTMX with WebStencils for dynamic content updates. See the `tasks.html` template and related C++ code (`ControllerTasks.h`/`.cpp`, `ModelTasks.h`/`.cpp`) for implementation details.
+Uses an in-memory `TList` (`ModelTasks.h/.cpp`) managed by a singleton to store task data. Leverages HTMX with WebStencils for dynamic updates. See `partials/tasks/` and `ControllerTasks.h/.cpp`.
 
 ## 📁 Project Structure
-The project consists of the following main components:
-1. C++ source files (`.cpp` and `.h`)
-2. Delphi Form files (`.dfm`)
-3. HTML templates (`.html`)
-4. Static assets (CSS, JavaScript, images)
+1.  C++ source files (`.cpp`, `.h`)
+2.  Datamodule files (`.dfm`)
+3.  **Shared** HTML templates (`.html`) from `resources/html`
+4.  **Shared** Static assets (CSS, JS, images) from `resources/static`
 
 ### 🔑 Key C++ Files
-- `WebStencilsDemo.cbproj`: The main C++ Builder project file.
-- `MainWebModule.h`/`.cpp`: Handles web requests and sets up the WebStencils engine.
-- `ModelTasks.h`/`.cpp` and `ControllerTasks.h`/`.cpp`: Implement the Tasks demo functionality (Tasks are stored in memory using a singleton).
-- `ControllerCustomers.h`/`.cpp`: Contains the controller used for `Big Table` and `Pagination` demos.
-- `ModelPaginationParams.h`/`.cpp` defines a reusable pagination system for WebStencils.
-- `Helpers` namespace (in `ClassHelpers.h`): Includes multiple class helpers to simplify functionality like routing in a WebModule or pagination on a FDQuery.
-- `CodeExamplesU.h`/`.cpp`: Contains code examples used in the demo pages.
+- `WebStencilsDemo.cbproj`: Main C++ Builder project file.
+- `MainWebModule.h/.cpp`: Handles web requests, sets up the WebStencils engine, defines routes, and manages data modules.
+- `ModelTasks.h/.cpp`, `ControllerTasks.h/.cpp`: Implement the in-memory Tasks demo.
+- `ControllerCustomers.h/.cpp`: Implement the SQLite-based Customers demos (Big Table, Pagination).
+- `ModelPaginationParams.h/.cpp`: Defines a reusable pagination parameter class.
+- `ClassHelpers.h/.cpp`: Provides helper functions (routing, pagination).
+- `CodeExamplesU.h/.cpp`: Contains code snippets for the documentation pages.
 
 ### 📄 HTML Templates
-- Located in the shared `resources/html` directory.
-- `layouts/mainLayout.html`: The main layout template.
-- Various content pages (e.g., `home.html`, `basics.html`, `keywords.html`).
-- Partial templates that can be reused in the `partials/` directory.
-- `partials/tasks`: Templates specific to the HTMX Tasks demo.
-- `partials/customers`: Templates for the `Big Table` and `Pagination` demos.
+Located in the **shared** `resources/html` directory. This highlights how the same templates serve both Delphi and C++ projects.
+- `layouts/mainLayout.html`: Main layout.
+- Various content pages (e.g., `home.html`, `basics.html`).
+- Reusable partials in `partials/`.
+- `partials/customers`: Templates for Big Table and Pagination demos.
+- `partials/tasks`: Templates for the HTMX Tasks demo.
 
-> **IMPORTANT**
-> The `codeBlock` template has a `copy` button. Due to browser security limitations, this only works if the URL is `localhost` or if it's being run under https. If the demo is accessed through the network, the button may not be functional.
+> **IMPORTANT**: The `codeBlock` partial includes a copy button that requires `localhost` or HTTPS due to browser security policies.
 
 ## 💻 Web Tech Used
 - Bootstrap 5.3
 - Bootstrap icons
 - HTMX 2.0.2
-- Minor custom CSS and JS
+- Minor custom CSS/JS (in `resources/static`)
 
-All the external dependencies are loaded directly from CDNs. The custom CSS and JS can be found in the shared `resources/static` folder.
+Dependencies are loaded via CDNs.
 
-## ✨ Environment Variables
-- The `MainWebModule` demonstrates handling custom variables accessible in templates via `@env.VARIABLE_NAME` (e.g., `@env.APP_NAME`, `@env.APP_EDITION`).
-- It also shows handling system variables like `@system.year`.
-- The `DEBUG_MODE` variable is automatically set based on the build configuration (`#ifdef _DEBUG`). 
+## ✨ Environment Variables & Data Sources
+- `MainWebModule` demonstrates custom environment variables (e.g., `@env.APP_NAME`) and system variables (e.g., `@system.year`).
+- `DEBUG_MODE` is set based on the `_DEBUG` preprocessor definition.
+- **Data Sources:** Uses an in-memory list for Tasks and an SQLite database (`resources/data/database.sqlite3`) for Customers, demonstrating backend data source flexibility with WebStencils. 

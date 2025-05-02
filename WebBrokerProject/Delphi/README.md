@@ -17,19 +17,19 @@ To deploy on Linux change the `Build configuration` to `Release`. All the requir
 Most of the menus explain the general use of WebStencils as well as some suggested ideas for templating patterns. 
 
 ### Big Table
-This demo loads 1000 customers loaded in a FireDAC query. Customers data is stored in a `sqlite` database in `resources/data`.
+This demo loads 1000 customers loaded in a FireDAC query. Customers data is stored in a `sqlite` database in `resources/data/database.sqlite3`.
 
 ### Pagination
-Same `customers` table, but this time using server-side pagination. 
+Same `customers` table from the `sqlite` database, but this time using server-side pagination.
 
 ### To-Do app - HTMX Integration
-The project includes an example of using HTMX with WebStencils for dynamic content updates. See the `tasks.html` template and related Delphi code for implementation details.
+This demo uses an in-memory `TList<TTaskItem>` managed by a singleton (`Model.Tasks.pas`) to store task data. It leverages HTMX with WebStencils for dynamic content updates. See the `partials/tasks` templates and related Delphi code (`Controller.Tasks.pas`) for implementation details.
 
 ## 📁 Project Structure 
 The project consists of the following main components:
 1. Delphi source files (`.pas` and `.dfm`)
-2. HTML templates (`.html`)
-3. Static assets (CSS, JavaScript, images)
+2. **Shared** HTML templates (`.html`) located in `resources/html`
+3. **Shared** Static assets (CSS, JavaScript, images) located in `resources/static`
 
 ### 🔑 Key Delphi Units
 - `WebStencilsDemo.dpr`: The main project file that includes WebBroker
@@ -41,10 +41,12 @@ The project consists of the following main components:
 - `CodeExamplesU.pas`: Contains code examples used in the demo pages
 
 ### 📄 HTML Templates
+Located in the **shared** `resources/html` directory. This demonstrates how the same templates can be used across different projects (Delphi/C++, WebBroker/RAD Server).
 - `layouts/mainLayout.html`: The main layout template
 - Various content pages (e.g., `home.html`, `basics.html`, `keywords.html`)
-- Partial templates that can be resused in the `partials/` directory
-- `customers` folder. It includes the templates for `Big Table` and `Pagination` demos, sharing some of the same templates. 
+- Partial templates reusable across pages in the `partials/` directory
+- `partials/customers`: Templates for the `Big Table` and `Pagination` demos.
+- `partials/tasks`: Templates specific to the HTMX Tasks demo.
 
 > **IMPORTANT**
 > The `codeBlock` template has a `copy` button. Due to browser security limitations, this only works if the URL is `localhost` or if it's being run under https. If the demo is accessed through the network, the button is not functional. 
@@ -57,8 +59,9 @@ The project consists of the following main components:
 
 All the external dependencies are loaded directly from CDNs. The custom CSS and JS can be found in the `static` folder.
 
-## ✨ Environment Variables
-- The `MainWebModuleU` demonstrates handling custom variables (using `TDictionary<string, string>`) accessible in templates via `@env.VARIABLE_NAME` (e.g., `@env.APP_NAME`, `@env.APP_EDITION`).
+## ✨ Environment Variables & Data Sources
+- The `MainWebModuleU` demonstrates handling custom environment variables accessible in templates via `@env.VARIABLE_NAME` (e.g., `@env.APP_NAME`, `@env.APP_EDITION`).
 - It also shows handling system variables like `@system.year` and `@system.timestamp` via the `WebStencilsEngineValue` event.
-- The `DEBUG_MODE` variable is automatically set based on the build configuration using the `{$IFDEF DEBUG}` compiler directive.
+- The `DEBUG_MODE` variable is automatically set based on the build configuration.
+- **Data Sources:** This project uses an in-memory list for Tasks and an SQLite database (`resources/data/database.sqlite3`) for Customer data, showcasing WebStencils' independence from specific data storage mechanisms.
 
