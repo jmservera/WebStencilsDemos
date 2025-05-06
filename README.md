@@ -2,7 +2,7 @@
 
 ![WebStencils screenshot](.github/images/WebStencils-Screenshot.png)
 
-Embarcadero official WebStencils demo repository. Note that you will need RAD Studio (with Delphi or C++Builder) 12.2 or higher to compile the demos.
+Embarcadero official WebStencils demo repository. Note that you will need RAD Studio (with Delphi or C++Builder) 12.3 or higher to compile the demos.
 
 ## Sample Projects included
 
@@ -28,6 +28,6 @@ This demo shows the core functionality of WebStencils in a FireMonkey (FMX) appl
 [More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsShowcase)
 
 ## Copyright
-This software is Copyright 2024 Embarcadero Technologies, Inc.
+This software is Copyright 2025 Embarcadero Technologies, Inc.
 
 You may only use this software if you are an authorized licensee of an Embarcadero developer tools product. This software is considered a Redistributable as defined in the software license agreement that comes with the Embarcadero Products and is governed by the terms of such software license agreement (https://www.embarcadero.com/products/rad-studio/rad-studio-eula).
