@@ -3,7 +3,7 @@
   It implements a singleton pattern to manage a list of tasks.
 }
 
-unit Model.Tasks;
+unit Models.Tasks;
 
 interface
 

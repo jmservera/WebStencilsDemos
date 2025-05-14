@@ -10,8 +10,8 @@ RAD Server requires absolute paths for resources. Before running:
 1.  **Open `WebResource.pas`**. 
 2.  Locate the `DataModuleCreate` event handler.
 3.  **Update the `LProjectPath` constant** to the absolute path of the *project directory* on your machine (e.g., `C:\Path\To\WebStencilsDemos\RADServerProject\Delphi`). This ensures the server can find the shared templates and the InterBase database.
-
-Run the RAD Server development server (`EMSDevServer.exe`) and ensure the project's BPL is loaded.
+4.  Run the RAD Server development server (`EMSDevServer.exe`) and ensure the project's BPL is loaded.
+5.  Open a browser and access `http://localhost:8080/web`
 
 **IMPORTANT**: The `codeBlock` snippet in the docs includes a `copy` button. Due to browser security, this only works when accessing via `localhost` or HTTPS.
 > _This project has been tested on Windows._

@@ -42,10 +42,10 @@ uses
   // Own units
   Helpers.WebModule,
   Helpers.FDQuery,
-  Controller.Tasks,
-  Model.Tasks,
-  Controller.Customers,
-    CodeExamplesU;
+  Controllers.Tasks,
+  Models.Tasks,
+  Controllers.Customers,
+  CodeExamplesU;
 
 type
   { TEnvironmentSettings: Class to hold environment/application settings for WebStencils }
@@ -152,9 +152,7 @@ end;
 
 procedure TMainWebModule.InitRequiredData;
 begin
-  // Set the path for resources based on the platform
-  // Check Project/Deployment. The required resources are added there for Linux Deployment using PAServer
-  // For simplifying the demo, on Windows the path of the templates is on the same project folder. Release deployment would need a fix in the Path
+  // Set the path for resources based on the platform and build configuration
   var BinaryPath := TPath.GetDirectoryName(ParamStr(0));
 {$IFDEF MSWINDOWS}
   FResourcesPath := TPath.Combine(BinaryPath, '../../../../resources');

@@ -1,4 +1,4 @@
-﻿//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 #pragma hdrstop
 
 #include "WebResource.h"
@@ -56,10 +56,6 @@ __fastcall TWebstencilsResource1::TWebstencilsResource1(TComponent* Owner)
     WebStencilsEngine1->OnValue = WebStencilsEngine1Value;
 }
 
-__fastcall TWebstencilsResource1::~TWebstencilsResource1()
-{
-}
-
 void __fastcall TWebstencilsResource1::WebStencilsEngine1Value(TObject* Sender, const String AObjectName,
             const String APropName, String &AReplaceText, bool &AHandled)
 {
@@ -81,7 +77,7 @@ void __fastcall TWebstencilsResource1::WebStencilsEngine1Value(TObject* Sender, 
     }
 }
 
-void __fastcall TWebstencilsResource1::Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::GetHome(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     String LHTMLContent;
     WebStencilsProcessor->InputFileName = TPath::Combine(WebStencilsProcessor->PathTemplate, "home.html");
@@ -89,32 +85,32 @@ void __fastcall TWebstencilsResource1::Get(TEndpointContext* AContext, TEndpoint
     AResponse->Body->SetString(LHTMLContent);
 }
 
-void __fastcall TWebstencilsResource1::DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     FTasksController->DeleteTask(ARequest, AResponse);
 }
 
-void __fastcall TWebstencilsResource1::PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     FTasksController->CreateTask(ARequest, AResponse);
 }
 
-void __fastcall TWebstencilsResource1::GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     FTasksController->GetEditTask(ARequest, AResponse);
 }
 
-void __fastcall TWebstencilsResource1::PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     FTasksController->ToggleCompletedTask(ARequest, AResponse);
 }
 
-void __fastcall TWebstencilsResource1::PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     FTasksController->EditTask(ARequest, AResponse);
 }
 
-void __fastcall TWebstencilsResource1::GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     if (FCustomersController)
     {
@@ -126,7 +122,7 @@ void __fastcall TWebstencilsResource1::GetPaginatedCustomers(TEndpointContext* A
     }
 }
 
-void __fastcall TWebstencilsResource1::GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
+void TWebstencilsResource1::GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse)
 {
     if (FCustomersController)
     {
@@ -140,7 +136,7 @@ void __fastcall TWebstencilsResource1::GetAllCustomersEndpoint(TEndpointContext*
 
 static void Register()
 {
-    std::unique_ptr<TEMSResourceAttributes> attributes(new TEMSResourceAttributes());
+	std::unique_ptr<TEMSResourceAttributes> attributes(new TEMSResourceAttributes());
     attributes->ResourceName = "web";
 
     attributes->ResourceSuffix["html.Get"] = "/{filename}";
@@ -148,7 +144,8 @@ static void Register()
     attributes->ResourceSuffix["js.Get"] = "/static/js/{filename}";
     attributes->ResourceSuffix["img.Get"] = "/static/img/{filename}";
 
-    attributes->ResourceSuffix["Get"] = "/";
+    attributes->ResourceSuffix["GetHome"] = "./";
+
     attributes->ResourceSuffix["DeleteTask"] = "/tasks";
     attributes->ResourceSuffix["PostTask"] = "/tasks/add";
     attributes->ResourceSuffix["GetTasksEdit"] = "/tasks/edit";
@@ -158,7 +155,8 @@ static void Register()
     attributes->ResourceSuffix["GetPaginatedCustomers"] = "/pagination";
     attributes->ResourceSuffix["GetAllCustomersEndpoint"] = "/bigtable";
 
+
     RegisterResource(__typeinfo(TWebstencilsResource1), attributes.release());
 }
 
-#pragma startup Register 64
+#pragma startup Register 32

@@ -8,7 +8,7 @@
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">WebStencilsRADServerDemo</ProjectName>
-        <TargetedPlatforms>1048707</TargetedPlatforms>
+        <TargetedPlatforms>131</TargetedPlatforms>
         <AppType>Package</AppType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -134,11 +134,11 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="CodeExamplesU.pas"/>
-        <DCCReference Include="Controller.Tasks.pas"/>
-        <DCCReference Include="Model.Tasks.pas"/>
+        <DCCReference Include="Controllers.Tasks.pas"/>
+        <DCCReference Include="Models.Tasks.pas"/>
         <DCCReference Include="Helpers.FDQuery.pas"/>
-        <DCCReference Include="Controller.Customers.pas"/>
-        <DCCReference Include="Model.PaginationParams.pas"/>
+        <DCCReference Include="Controllers.Customers.pas"/>
+        <DCCReference Include="Models.PaginationParams.pas"/>
         <None Include="README.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -1041,7 +1041,7 @@
                 <Platform value="Linux64">True</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">True</Platform>
-                <Platform value="Win64x">True</Platform>
+                <Platform value="Win64x">False</Platform>
             </Platforms>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>

@@ -1,4 +1,4 @@
-﻿unit Controller.Customers;
+﻿unit Controllers.Customers;
 
 interface
 
@@ -10,7 +10,7 @@ uses
   Web.Stencils,
 
   Helpers.FDQuery,
-  Model.PaginationParams;
+  Models.PaginationParams;
 
 type
   // Simple record to hold pagination info for the template

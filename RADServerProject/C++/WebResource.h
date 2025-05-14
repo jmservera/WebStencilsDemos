@@ -1,4 +1,4 @@
-﻿// EMS Resource Modules
+// EMS Resource Modules
 //---------------------------------------------------------------------------
 
 #ifndef WebResourceH
@@ -91,18 +91,14 @@ private:
 
 public:
     __fastcall TWebstencilsResource1(TComponent* Owner);
-    virtual __fastcall ~TWebstencilsResource1();
-    void __fastcall Get(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
-    void __fastcall GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void GetHome(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void DeleteTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void PostTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void GetTasksEdit(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void PutTaskToggleCompleted(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void PutTask(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void GetPaginatedCustomers(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
+    void GetAllCustomersEndpoint(TEndpointContext* AContext, TEndpointRequest* ARequest, TEndpointResponse* AResponse);
 };
 
-//---------------------------------------------------------------------------
-extern PACKAGE TWebstencilsResource1 *WebstencilsResource1;
-//---------------------------------------------------------------------------
 #endif

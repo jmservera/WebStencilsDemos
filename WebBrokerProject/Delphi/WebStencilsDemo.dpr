@@ -15,11 +15,11 @@ uses
   MainWebModuleU in 'MainWebModuleU.pas' {MainWebModule: TWebModule},
   ServerConst1 in 'ServerConst1.pas',
   Helpers.WebModule in 'Helpers.WebModule.pas',
-  Model.Tasks in 'Model.Tasks.pas',
-  Controller.Tasks in 'Controller.Tasks.pas',
-  Controller.Customers in 'Controller.Customers.pas',
+  Models.Tasks in 'Models.Tasks.pas',
+  Controllers.Tasks in 'Controllers.Tasks.pas',
+  Controllers.Customers in 'Controllers.Customers.pas',
   Helpers.FDQuery in 'Helpers.FDQuery.pas',
-  Model.PaginationParams in 'Model.PaginationParams.pas',
+  Models.PaginationParams in 'Models.PaginationParams.pas',
   CodeExamplesU in 'CodeExamplesU.pas';
 
 {$R *.res}

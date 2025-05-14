@@ -3,7 +3,7 @@
   It handles CRUD operations for tasks and renders the appropriate templates.
 }
 
-unit Controller.Tasks;
+unit Controllers.Tasks;
 
 interface
 
@@ -13,7 +13,7 @@ uses
   Web.HTTPApp,
   Web.Stencils,
 
-  Model.Tasks;
+  Models.Tasks;
 
 type
 

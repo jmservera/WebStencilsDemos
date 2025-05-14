@@ -4,7 +4,7 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>131</TargetedPlatforms>
         <AppType>Console</AppType>
@@ -122,11 +122,11 @@
         </DCCReference>
         <DCCReference Include="ServerConst1.pas"/>
         <DCCReference Include="Helpers.WebModule.pas"/>
-        <DCCReference Include="Model.Tasks.pas"/>
-        <DCCReference Include="Controller.Tasks.pas"/>
-        <DCCReference Include="Controller.Customers.pas"/>
+        <DCCReference Include="Models.Tasks.pas"/>
+        <DCCReference Include="Controllers.Tasks.pas"/>
+        <DCCReference Include="Controllers.Customers.pas"/>
         <DCCReference Include="Helpers.FDQuery.pas"/>
-        <DCCReference Include="Model.PaginationParams.pas"/>
+        <DCCReference Include="Models.PaginationParams.pas"/>
         <DCCReference Include="CodeExamplesU.pas"/>
         <None Include="README.md"/>
         <BuildConfiguration Include="Base">

@@ -1,6 +1,6 @@
 <li class="list-group-item list-group-item-action d-flex" id="task-@Task.Id">
 	<input class="form-check-input me-2" 
-		   hx-put="@env.Resource/tasks/toggleCompleted?id=@Task.Id&oob=true" 
+		   hx-put="@env.Resource/tasks/toggleCompleted?id=@Task.Id" 
 		   hx-target="#task-card"
 		   hx-swap="outerHTML" 
 		   type="checkbox" 

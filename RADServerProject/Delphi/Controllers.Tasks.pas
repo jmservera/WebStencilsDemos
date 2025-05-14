@@ -3,14 +3,14 @@
   It handles CRUD operations for tasks and renders the appropriate templates.
 }
 
-unit Controller.Tasks;
+unit Controllers.Tasks;
 
 interface
 
 uses
   System.SysUtils, Web.HTTPApp, Web.Stencils, EMS.ResourceAPI, FireDAC.Comp.Client,
 
-  Model.Tasks;
+  Models.Tasks;
 
 type
 
@@ -58,7 +58,7 @@ begin
     FWebStencilsProcessor := TWebStencilsProcessor.Create(nil);
     FWebStencilsProcessor.Engine := FWebStencilsEngine;
     FTasks := TTasks.Create(AFDConnection);
-    FWebStencilsEngine.AddVar('Tasks', FTasks);
+    FWebStencilsEngine.AddVar('Tasks', FTasks, False);
   except
     on E: Exception do
       WriteLn('TTasksController.Create: ' + E.Message);

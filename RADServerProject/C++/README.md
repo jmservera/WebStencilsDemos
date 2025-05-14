@@ -1,4 +1,4 @@
-# WebStencils Demo - RAD Server Project (C++Builder)
+﻿# WebStencils Demo - RAD Server Project (C++Builder)
 
 ![WebStencils RAD Server screenshot](../../.github/images/WebStencils-RADServer.png)
 
@@ -10,11 +10,13 @@ RAD Server requires absolute paths for resources. Before running:
 1.  **Open `WebResourceCpp.h/.cpp`**.
 2.  Locate the constructor or an initialization method where paths are set (likely involving `FResourcesPath`).
 3.  **Update the path** to the absolute path of the *main project directory* (`WebStencilsDemos`) on your machine (e.g., `C:\Path\To\WebStencilsDemos`). The code likely constructs the full path to `resources` from there. This ensures the server can find the shared templates and the InterBase database (`resources/data/tasks.ib`).
-
-Run the RAD Server development server (`EMSDevServer.exe`) and ensure the project's BPL is loaded.
+4.  Run the RAD Server development server (`EMSDevServer.exe`) and ensure the project's BPL is loaded.
+5.  Open a browser and access `http://localhost:8080/web`
 
 **IMPORTANT**: The `codeBlock` snippet in the docs includes a `copy` button. Due to browser security, this only works when accessing via `localhost` or HTTPS.
-> _This project has been tested on Windows._
+
+> [!IMPORTANT]
+> _This project is only compatible with the platform `Windows 64-bit (Modern)`.
 
 ## 📚 Examples
 ### Docs
