@@ -25,7 +25,7 @@ Demonstrates using WebStencils within Embarcadero's RAD Server REST API backend 
 ### FMX Showcase
 This demo shows the core functionality of WebStencils in a FireMonkey (FMX) application through a highly visual interface. The default templates are stored as global constants in a dedicated unit, and the demo allows editing the templates on the memo fields to allow interactive visualization of the generated output. 
 
-[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/WebStencilsShowcase)
+[More info](https://github.com/Embarcadero/WebStencilsDemos/tree/main/FMXShowcase)
 
 ## Copyright
 This software is Copyright 2025 Embarcadero Technologies, Inc.
