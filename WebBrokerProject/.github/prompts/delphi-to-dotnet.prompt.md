@@ -8,6 +8,29 @@ tools: ['changes', 'codebase', 'editFiles', 'fetch', 'findTestFiles', 'githubRep
 
 This prompt file provides comprehensive guidance for migrating Delphi projects to .NET, covering all major language features, frameworks, and architectural patterns.
 
+## 🚨 MANDATORY FIRST STEP: Create Migration Branch
+
+**Before starting any migration work, you MUST:**
+
+1. **Create a new Git branch** for the migration work
+   - Use a descriptive name like `feature/delphi-to-dotnet-migration` or `migration/webbroker-to-aspnetcore`
+   - This isolates migration work from the main codebase
+   - Allows for safe experimentation and rollback if needed
+
+2. **Execute these commands immediately:**
+   ```bash
+   git checkout -b [name of the branch]
+   ```
+
+3. **Verify you're on the correct branch** before proceeding:
+   ```bash
+   git branch --show-current
+   ```
+
+**⚠️ DO NOT PROCEED with any file changes until the branch is created and you've switched to it.**
+
+---
+
 ## 🎯 Migration Scope
 
 When helping with Delphi to .NET migration, consider these key areas:
@@ -135,10 +158,22 @@ When helping with Delphi to .NET migration, consider these key areas:
 
 When migrating a Delphi project, follow this systematic approach:
 
-1. **Architecture Analysis**
-   - [ ] Identify all Delphi units and their responsibilities
-   - [ ] Map data access patterns and dependencies
-   - [ ] Document web endpoints and routing
+### 🔄 STEP 0: Git Branch Setup (MANDATORY FIRST STEP)
+**⚠️ CRITICAL: Always start by creating a new branch for the migration work**
+
+- [ ] **Create a new branch** with a descriptive name (e.g., `feature/delphi-to-dotnet-migration`, `migration/webbroker-to-aspnetcore`)
+- [ ] Switch to the new branch before making any changes
+- [ ] Set up CI/CD pipeline for the migration branch if needed
+
+**Example Git commands:**
+```bash
+git checkout -b feature/delphi-to-dotnet-migration
+```
+
+### 📊 STEP 1: Architecture Analysis
+- [ ] Identify all Delphi units and their responsibilities
+- [ ] Map data access patterns and dependencies
+- [ ] Document web endpoints and routing
 
 2. **Project Structure Setup**
    - [ ] Create new ASP.NET Core project
@@ -237,7 +272,13 @@ public class TasksController : Controller
 
 ## 🎯 Best Practices for Migration
 
-0. **Devops**: Start creating a new branch for migration and use CI/CD pipelines for automated testing and deployment
+**🚨 RULE #1: ALWAYS CREATE A NEW BRANCH FIRST**
+Before any migration work begins, you MUST:
+1. Create a new branch with a descriptive name (e.g., `feature/delphi-to-dotnet-migration`)
+2. Switch to the new branch
+3. Push the branch to the remote repository
+
+**Migration Best Practices:**
 1. **Incremental Migration**: Migrate one module at a time to reduce risk
 2. **Maintain Functionality**: Ensure feature parity during migration
 3. **Modern Patterns**: Adopt .NET best practices and design patterns
